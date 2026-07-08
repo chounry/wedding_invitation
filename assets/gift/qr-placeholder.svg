@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <rect width="240" height="240" fill="#fffaf3"/>
+  <g fill="#3b2f2f">
+    <rect x="16" y="16" width="56" height="56" fill="none" stroke="#3b2f2f" stroke-width="8"/>
+    <rect x="32" y="32" width="24" height="24"/>
+    <rect x="168" y="16" width="56" height="56" fill="none" stroke="#3b2f2f" stroke-width="8"/>
+    <rect x="184" y="32" width="24" height="24"/>
+    <rect x="16" y="168" width="56" height="56" fill="none" stroke="#3b2f2f" stroke-width="8"/>
+    <rect x="32" y="184" width="24" height="24"/>
+    <rect x="96" y="16" width="16" height="16"/>
+    <rect x="120" y="32" width="16" height="16"/>
+    <rect x="96" y="48" width="16" height="16"/>
+    <rect x="136" y="16" width="16" height="16"/>
+    <rect x="96" y="96" width="16" height="16"/>
+    <rect x="120" y="96" width="16" height="16"/>
+    <rect x="144" y="96" width="16" height="16"/>
+    <rect x="168" y="96" width="16" height="16"/>
+    <rect x="192" y="96" width="16" height="16"/>
+    <rect x="96" y="120" width="16" height="16"/>
+    <rect x="96" y="144" width="16" height="16"/>
+    <rect x="128" y="120" width="16" height="16"/>
+    <rect x="160" y="128" width="16" height="16"/>
+    <rect x="184" y="144" width="16" height="16"/>
+    <rect x="208" y="120" width="16" height="16"/>
+    <rect x="136" y="152" width="16" height="16"/>
+    <rect x="112" y="176" width="16" height="16"/>
+    <rect x="144" y="176" width="16" height="16"/>
+    <rect x="168" y="192" width="16" height="16"/>
+    <rect x="192" y="176" width="16" height="16"/>
+    <rect x="208" y="200" width="16" height="16"/>
+    <rect x="120" y="208" width="16" height="16"/>
+    <rect x="152" y="208" width="16" height="16"/>
+    <rect x="184" y="216" width="16" height="16"/>
+  </g>
+  <text x="120" y="236" font-family="Georgia, serif" font-size="10" fill="#a98b6b" text-anchor="middle">SAMPLE QR — replace with your real code</text>
+</svg>
