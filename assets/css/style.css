@@ -807,7 +807,14 @@ footer .sub {
     display: flex;
   }
   .countdown {
-    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .countdown .unit {
+    min-width: 64px;
+    padding: 14px 10px;
+  }
+  .countdown .num {
+    font-size: 26px;
   }
   .lightbox-prev, .lightbox-next {
     width: 38px;
@@ -823,5 +830,20 @@ footer .sub {
   }
   section {
     padding: 80px 0;
+  }
+  .countdown {
+    gap: 8px;
+  }
+  .countdown .unit {
+    min-width: 0;
+    flex: 1 1 0;
+    padding: 12px 6px;
+  }
+  .countdown .num {
+    font-size: 22px;
+  }
+  .countdown .label {
+    font-size: 10px;
+    letter-spacing: 0.08em;
   }
 }
