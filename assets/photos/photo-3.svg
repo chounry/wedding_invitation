@@ -1,12 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
   <defs>
-    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#e3e6d3"/>
-      <stop offset="100%" stop-color="#b7c2a0"/>
-    </linearGradient>
+    <radialGradient id="bg3" cx="50%" cy="42%" r="70%">
+      <stop offset="0%" stop-color="#fdf8ec"/>
+      <stop offset="100%" stop-color="#f1e4c6"/>
+    </radialGradient>
   </defs>
-  <rect width="800" height="600" fill="url(#g3)"/>
-  <circle cx="400" cy="260" r="90" fill="#ffffff" opacity="0.35"/>
-  <text x="400" y="275" font-family="Georgia, serif" font-size="34" fill="#3f4a35" text-anchor="middle">Photo 3</text>
-  <text x="400" y="520" font-family="Georgia, serif" font-size="18" fill="#3f4a35" text-anchor="middle" opacity="0.75">Replace with your own photo</text>
+  <rect width="1000" height="1000" fill="url(#bg3)"/>
+  <g fill="#c9a875" opacity="0.5">
+    <circle cx="210" cy="230" r="5"/><circle cx="810" cy="250" r="5"/>
+    <circle cx="180" cy="760" r="5"/><circle cx="820" cy="780" r="5"/>
+  </g>
+  <circle cx="500" cy="500" r="300" fill="none" stroke="#c9a875" stroke-width="2" opacity="0.55"/>
+  <g fill="none" stroke="#b8901f" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- left flute -->
+    <g transform="rotate(-14 430 500)">
+      <path d="M395 400 C395 470 415 500 430 505 C445 500 465 470 465 400 Z"/>
+      <path d="M430 505 L430 610"/>
+      <path d="M395 620 L465 620"/>
+    </g>
+    <!-- right flute -->
+    <g transform="rotate(14 570 500)">
+      <path d="M535 400 C535 470 555 500 570 505 C585 500 605 470 605 400 Z"/>
+      <path d="M570 505 L570 610"/>
+      <path d="M535 620 L465 620"/>
+    </g>
+    <!-- bubbles -->
+    <g stroke-width="3" opacity="0.8">
+      <circle cx="500" cy="360" r="5"/><circle cx="470" cy="330" r="4"/><circle cx="530" cy="335" r="4"/>
+      <circle cx="500" cy="300" r="3"/>
+    </g>
+  </g>
+  <text x="500" y="790" font-family="Georgia, serif" font-size="30" fill="#b8901f" text-anchor="middle" font-style="italic" opacity="0.85">A toast to us</text>
 </svg>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Chounry &amp; Pisey — Invitation Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/card.css" />
+</head>
+<body>
+
+<a class="hub-link" href="index.html">&larr; All designs</a>
+
+<!-- Closed envelope (tap to open) -->
+<div class="stage">
+  <div class="envelope" tabindex="0" role="button" aria-label="Open the wedding invitation">
+    <div class="env-body"></div>
+    <div class="env-letter">
+      <div class="l-inner">
+        <div class="script">You&rsquo;re Invited</div>
+        <div class="nm">Chounry &amp; Pisey</div>
+      </div>
+    </div>
+    <div class="env-flap"></div>
+    <div class="env-seal">C&amp;P</div>
+    <div class="env-prompt">Tap to open</div>
+  </div>
+</div>
+
+<!-- The invitation itself -->
+<main class="invitation">
+  <div class="card">
+    <div class="card-inner">
+      <p class="iv-kicker">Together with their families</p>
+      <h1 class="iv-names">Oun Chounry <span class="amp">&amp;</span> Sorm Pisey</h1>
+      <p class="iv-date">18&ndash;19 December 2026 &middot; from 7:00 AM</p>
+
+      <div class="rule"></div>
+
+      <div class="iv-countdown">
+        <div class="u"><span class="n" data-cd="days">0</span><span class="l">Days</span></div>
+        <div class="u"><span class="n" data-cd="hours">00</span><span class="l">Hrs</span></div>
+        <div class="u"><span class="n" data-cd="minutes">00</span><span class="l">Min</span></div>
+        <div class="u"><span class="n" data-cd="seconds">00</span><span class="l">Sec</span></div>
+      </div>
+
+      <div class="iv-photos">
+        <img src="assets/photos/photo-1.svg" alt="Moment 1">
+        <img src="assets/photos/photo-2.svg" alt="Moment 2">
+        <img src="assets/photos/photo-3.svg" alt="Moment 3">
+        <img src="assets/photos/photo-4.svg" alt="Moment 4">
+        <img src="assets/photos/photo-5.svg" alt="Moment 5">
+        <img src="assets/photos/photo-6.svg" alt="Moment 6">
+      </div>
+
+      <div class="iv-block">
+        <h3>Ceremony</h3>
+        <p>Friday &amp; Saturday, 18&ndash;19 December 2026</p>
+        <p>From 7:00 AM &middot; both days</p>
+      </div>
+
+      <div class="iv-block">
+        <h3>Venue</h3>
+        <p>Angkor Wat, Siem Reap, Cambodia</p>
+        <p class="iv-small">(placeholder &mdash; swap the map query for your real address)</p>
+        <div class="map">
+          <iframe src="https://www.google.com/maps?q=Angkor+Wat,+Siem+Reap,+Cambodia&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Wedding venue map"></iframe>
+        </div>
+        <a class="btn" href="https://www.google.com/maps?q=Angkor+Wat,+Siem+Reap,+Cambodia" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+
+      <div class="rule"></div>
+
+      <div class="iv-block">
+        <h3>Wedding Gift</h3>
+        <img class="iv-qr" src="assets/gift/qr-placeholder.svg" alt="Wedding gift QR code">
+        <p class="iv-small">Scan to send a gift &middot; (placeholder QR &mdash; replace with your real code)</p>
+      </div>
+
+      <div class="rule"></div>
+      <p class="iv-kicker">See you there &middot; with love</p>
+    </div>
+  </div>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox">
+  <button class="lx lx-close" aria-label="Close">&times;</button>
+  <button class="lx lx-prev" aria-label="Previous">&#8249;</button>
+  <img src="" alt="" />
+  <button class="lx lx-next" aria-label="Next">&#8250;</button>
+</div>
+
+<script src="assets/js/card.js"></script>
+</body>
+</html>

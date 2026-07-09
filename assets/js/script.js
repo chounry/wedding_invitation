@@ -120,54 +120,22 @@
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  /* ---------- Auto-sliding carousel ---------- */
-  var carousel = document.querySelector(".carousel");
-  if (carousel) {
-    var slides = Array.prototype.slice.call(carousel.querySelectorAll(".carousel-slide"));
-    var dots = Array.prototype.slice.call(carousel.querySelectorAll(".dot"));
-    var prevBtn = carousel.querySelector(".carousel-arrow.prev");
-    var nextBtn = carousel.querySelector(".carousel-arrow.next");
-    var current = 0;
-    var AUTOPLAY_MS = 4500;
-    var timer = null;
-    var isHovering = false;
-
-    function goTo(index) {
-      slides[current].classList.remove("active");
-      dots[current].classList.remove("active");
-      current = (index + slides.length) % slides.length;
-      slides[current].classList.add("active");
-      dots[current].classList.add("active");
+  /* ---------- Gallery background auto-slideshow ---------- */
+  var galleryBg = document.querySelector(".gallery-bg");
+  if (galleryBg) {
+    var bgSlides = Array.prototype.slice.call(galleryBg.querySelectorAll(".gallery-bg-slide"));
+    if (bgSlides.length > 1) {
+      var bgIndex = 0;
+      setInterval(function () {
+        bgSlides[bgIndex].classList.remove("active");
+        bgIndex = (bgIndex + 1) % bgSlides.length;
+        bgSlides[bgIndex].classList.add("active");
+      }, 5000);
     }
-
-    function next() { goTo(current + 1); }
-    function prev() { goTo(current - 1); }
-
-    function startAutoplay() {
-      stopAutoplay();
-      timer = setInterval(next, AUTOPLAY_MS);
-    }
-    function stopAutoplay() {
-      if (timer) clearInterval(timer);
-    }
-    function restartAutoplayUnlessHovering() {
-      if (!isHovering) startAutoplay();
-    }
-
-    nextBtn.addEventListener("click", function () { next(); restartAutoplayUnlessHovering(); });
-    prevBtn.addEventListener("click", function () { prev(); restartAutoplayUnlessHovering(); });
-    dots.forEach(function (dot, idx) {
-      dot.addEventListener("click", function () { goTo(idx); restartAutoplayUnlessHovering(); });
-    });
-
-    carousel.addEventListener("mouseenter", function () { isHovering = true; stopAutoplay(); });
-    carousel.addEventListener("mouseleave", function () { isHovering = false; startAutoplay(); });
-
-    startAutoplay();
   }
 
   /* ---------- Gallery Lightbox ---------- */
-  var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".gallery-item img"));
+  var galleryItems = Array.prototype.slice.call(document.querySelectorAll(".polaroid img"));
   var lightbox = document.querySelector(".lightbox");
   var lightboxImg = document.querySelector(".lightbox img");
   var lightboxClose = document.querySelector(".lightbox-close");
