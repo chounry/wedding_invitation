@@ -1,0 +1,508 @@
+/* ============================================================
+   Design 5 — "Grand Invitation"
+   Sealed envelope intro with animated names, then scrolling sections
+   ============================================================ */
+:root {
+  --ivory: #fdf9f0;
+  --cream: #f7ecdd;
+  --sand: #efe0cb;
+  --gold: #b8901f;
+  --gold-lt: #d9b45c;
+  --gold-pale: #ecd9a5;
+  --blush: #c58f7a;
+  --sage: #8d9c78;
+  --ink: #3b2e24;
+  --ink-soft: #6b5646;
+  --white: #fffdf8;
+  /* envelope palette — shared by the intro envelope and the opened one in §1 */
+  --wine: #7c2032;
+  --wine-lo: #5d1523;
+  --wine-hi: #93293c;
+  --lace-col: #a0374a;
+  --seal-cream: #f4e9d6;
+  --velvet: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  --font-script: "Great Vibes", cursive;
+  --font-heading: "Playfair Display", Georgia, serif;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--ivory);
+  color: var(--ink);
+  font-size: 19px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+
+.hub-link {
+  position: fixed; z-index: 90;
+  top: 20px; right: 22px;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(255,253,248,0.86);
+  border: 1px solid rgba(184,144,31,0.35);
+  padding: 9px 15px; border-radius: 999px;
+  backdrop-filter: blur(4px);
+}
+.hub-link:hover { background: #fff; }
+
+/* ============ INTRO — full-screen burgundy lace envelope ============ */
+.intro {
+  --flapH: 52%;
+  position: fixed; inset: 0; z-index: 80;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--wine-lo);
+  transition: opacity 1s ease, visibility 1s ease;
+}
+.intro.gone { opacity: 0; visibility: hidden; }
+
+/* floating petals in the intro */
+.petals { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 9; }
+.petals i {
+  position: absolute; top: -30px;
+  width: 12px; height: 12px; border-radius: 100% 0 100% 0;
+  background: rgba(244,233,214,0.5); opacity: 0.6;
+  animation: fall linear infinite, sway ease-in-out infinite;
+}
+@keyframes fall { to { transform: translateY(115vh) rotate(420deg); } }
+@keyframes sway { 0%,100% { margin-left: 0; } 50% { margin-left: 46px; } }
+
+/* the sealed envelope fills the whole screen */
+.envelope {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  cursor: pointer;
+  perspective: 2000px;
+}
+
+/* velvet body */
+.env-body {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 38%, var(--wine-hi) 0%, var(--wine) 45%, var(--wine-lo) 100%);
+  overflow: hidden;
+}
+/* felt / velvet grain */
+.env-body::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--velvet);
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+}
+
+/* the bottom pocket — its two diagonal seams are what make it read as an envelope */
+.env-bottom {
+  position: absolute; z-index: 2;
+  inset: 0;
+  clip-path: polygon(0 100%, 50% 44%, 100% 100%);
+  background: linear-gradient(180deg, var(--wine-hi) 0%, var(--wine) 60%);
+  box-shadow: inset 0 2px 0 rgba(255,225,230,0.12);
+}
+/* side panels, slightly darker, completing the fold structure */
+.env-side {
+  position: absolute; z-index: 1; inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.16), transparent 22%, transparent 78%, rgba(0,0,0,0.16));
+}
+
+/* the animated names, sitting on the flap above the seal */
+.env-names {
+  position: absolute; z-index: 6;
+  left: 0; right: 0; top: calc(var(--flapH) * 0.44);
+  transform: translateY(-50%);
+  text-align: center;
+  padding: 0 26px;
+}
+.env-names .kick {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(11px, 1.5vw, 17px);
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(248,238,224,0.92);
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: softIn 0.9s var(--ease) forwards 0.2s;
+}
+.env-names .line {
+  display: block;
+  font-family: var(--font-script);
+  font-size: clamp(30px, 5.8vw, 70px);
+  line-height: 1.12;
+  color: var(--seal-cream);
+}
+.env-names .amp {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: clamp(11px, 1.4vw, 16px);
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(248,238,224,0.7);
+  margin: 2px 0;
+  opacity: 0;
+  animation: softIn 0.9s var(--ease) forwards 1.05s;
+}
+/* per-character reveal (spans injected by JS), then a travelling gold shine.
+   Two animations compose: charIn handles opacity/transform, letterShine the colour. */
+.env-names .line span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(24px) rotateX(-55deg) scale(0.9);
+  filter: blur(7px);
+  animation: charIn 0.85s var(--ease) forwards,
+             letterShine 3.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.055s + var(--base, 0.35s)),
+                   calc(var(--i) * 0.07s + 2.2s);
+}
+@keyframes letterShine {
+  0%, 62%, 100% { color: var(--seal-cream); text-shadow: none; }
+  30% { color: #fffaf0; text-shadow: 0 0 18px rgba(255,240,215,0.75), 0 0 5px rgba(255,250,240,0.9); }
+}
+/* must end on filter:none (not blur(0)) — any filter value creates a stacking
+   context that breaks the parent's background-clip:text shimmer */
+@keyframes charIn { to { opacity: 1; transform: none; filter: none; } }
+@keyframes softIn { to { opacity: 1; } }
+
+/* ---- the flap ---- */
+.env-flap {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: var(--flapH);
+  background: linear-gradient(170deg, var(--wine-hi) 0%, var(--wine) 70%);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  transition: transform 1s var(--ease);
+  z-index: 5;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.28));
+}
+.env-flap::before {   /* same velvet grain on the flap */
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--velvet);
+  opacity: 0.16; mix-blend-mode: overlay;
+}
+
+/* ---- lace trim running down both flap edges ---- */
+.lace {
+  position: absolute; z-index: 7; top: 0;
+  height: 34px;
+  width: var(--lace-len, 70vmax);
+  pointer-events: none;
+}
+.lace-l { left: 0;      transform-origin: 0 0;  transform: rotate(var(--lace-angle, 35deg)); }
+.lace-r { left: 100%;   transform-origin: 0 0;  transform: rotate(calc(180deg - var(--lace-angle, 35deg))) scaleY(-1); }
+/* solid band with pin-holes */
+.lace::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 17px;
+  background-color: var(--lace-col);
+  background-image: radial-gradient(circle 2.2px at 11px 8.5px, rgba(60,8,18,0.55) 99%, transparent 100%);
+  background-size: 22px 17px;
+}
+/* scalloped edge hanging off the band */
+.lace::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 17px; height: 15px;
+  background-image:
+    radial-gradient(circle 4px at 11px 3px, rgba(60,8,18,0.4) 99%, transparent 100%),
+    radial-gradient(circle 9px at 11px 0, var(--lace-col) 99%, transparent 100%);
+  background-size: 22px 15px;
+  background-repeat: repeat-x;
+}
+
+/* ---- oval wax seal ---- */
+.env-seal {
+  position: absolute; z-index: 8;
+  top: var(--flapH); left: 50%; transform: translate(-50%,-50%);
+  width: clamp(84px, 9vw, 148px); aspect-ratio: 0.84;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #fffaf0 0%, var(--seal-cream) 45%, #ddcdb2 100%);
+  box-shadow: 0 12px 26px rgba(40,6,14,0.5), inset 0 -3px 8px rgba(150,130,100,0.35), inset 0 3px 6px rgba(255,255,255,0.7);
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.env-seal svg { width: 62%; height: 62%; opacity: 0.75; }
+.env-seal .mono {
+  position: absolute; bottom: 16%;
+  font-family: var(--font-heading);
+  font-size: clamp(9px, 1.05vw, 15px);
+  letter-spacing: 0.18em;
+  color: #9a8464;
+}
+
+.intro-hint {
+  position: absolute; z-index: 10;
+  left: 0; right: 0; top: calc(var(--flapH) + 13%);
+  text-align: center;
+  letter-spacing: 0.32em; text-transform: uppercase;
+  font-size: clamp(11px, 1.2vw, 15px);
+  font-family: var(--font-heading);
+  color: rgba(248,238,224,0.85);
+  animation: blink 2.2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity: 0.45; } 50% { opacity: 1; } }
+
+/* opening */
+.envelope.open .env-flap { transform: rotateX(180deg); z-index: 1; }
+.envelope.open .lace { opacity: 0; transition: opacity 0.5s ease; }
+.envelope.open .env-seal { opacity: 0; transform: translate(-50%,-50%) scale(0.35) rotate(25deg); }
+.envelope.open .env-names { animation: liftOut 1s var(--ease) forwards 0.35s; }
+@keyframes liftOut { to { transform: translateY(-30vh) scale(1.12); opacity: 0; } }
+
+/* ============ CONTENT ============ */
+.content { opacity: 0; transition: opacity 1s ease; }
+.content.show { opacity: 1; }
+
+.sec { padding: 110px 24px; position: relative; }
+.wrap { max-width: 1060px; margin: 0 auto; }
+.center { text-align: center; }
+
+.eyebrow {
+  display: inline-block; font-size: 13px; letter-spacing: 0.34em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+}
+.title { font-family: var(--font-heading); font-size: clamp(30px, 5vw, 50px); font-weight: 600; }
+.sub { color: var(--ink-soft); max-width: 620px; margin: 12px auto 0; }
+.orn { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 18px 0 34px; }
+.orn::before, .orn::after { content: ""; width: 62px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.orn::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.orn span { color: var(--gold); }
+
+/* reveal */
+.rv { opacity: 0; transform: translateY(34px); transition: opacity 0.95s var(--ease), transform 0.95s var(--ease); }
+.rv.in { opacity: 1; transform: translateY(0); }
+.rv.d1.in { transition-delay: 0.12s; } .rv.d2.in { transition-delay: 0.26s; } .rv.d3.in { transition-delay: 0.4s; }
+
+/* ---------- 1. HERO: opened envelope on decorative background ---------- */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  background-image: url('../photos/hero-bg-2.svg');
+  background-size: cover; background-position: center;
+  padding: 120px 24px;
+}
+/* the card rises out of the envelope; the envelope sits over its lower half */
+.opened-env {
+  position: relative;
+  width: min(560px, 92vw);
+  margin: 0 auto;
+  padding-bottom: 90px;        /* envelope extends below the card */
+}
+
+/* ---- the invitation card ---- */
+.oe-card {
+  position: relative;
+  z-index: 2;
+  width: 86%;
+  margin: 0 auto;
+  padding: 13px;
+  /* striped burgundy/ivory frame, like the reference */
+  background: repeating-linear-gradient(90deg, var(--wine) 0 10px, #fdf8ee 10px 20px);
+  box-shadow: 0 20px 44px rgba(40,6,14,0.3);
+}
+.oe-card-in {
+  background: #fdf8ee;
+  /* double keyline frame */
+  border: 2px solid var(--wine);
+  box-shadow: inset 0 0 0 6px #fdf8ee, inset 0 0 0 7px rgba(124,32,50,0.55);
+  /* blank bottom = the part tucked inside the envelope */
+  padding: 44px 24px 210px;
+  text-align: center;
+}
+.oe-card .kicker { font-size: 12px; letter-spacing: 0.34em; text-transform: uppercase; color: var(--wine); }
+.oe-card .names {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(32px, 6vw, 56px);
+  line-height: 1.18;
+  margin: 16px 0 12px;
+  color: #2f2119;
+}
+.oe-card .names .amp { display: block; font-family: var(--font-script); color: var(--wine); font-size: 0.66em; margin: 2px 0; }
+.oe-card .date {
+  font-size: clamp(13px, 2vw, 17px);
+  letter-spacing: 0.22em; text-transform: uppercase; color: #4a3a30;
+}
+.oe-card .place {
+  font-size: clamp(11px, 1.6vw, 14px);
+  letter-spacing: 0.24em; text-transform: uppercase; color: #7b6a5c;
+  margin-top: 8px;
+}
+.oe-card .rule { width: 58px; height: 1px; background: var(--wine); margin: 18px auto; opacity: 0.6; }
+
+/* ---- the envelope itself, overlapping the card's lower half ---- */
+.oe-env {
+  position: absolute; z-index: 3;
+  left: 0; right: 0; bottom: 0;
+  height: 300px;
+  filter: drop-shadow(0 26px 46px rgba(40,6,14,0.34));
+}
+/* darker interior showing in the V opening */
+.oe-inner {
+  position: absolute; inset: 0;
+  background: var(--wine-lo);
+  clip-path: polygon(0 0, 50% 32%, 100% 0, 100% 100%, 0 100%);
+}
+/* front panel — its V-shaped top edge is the envelope opening */
+.oe-front {
+  position: absolute; inset: 0;
+  background: linear-gradient(158deg, var(--wine-hi) 0%, var(--wine) 55%, var(--wine-lo) 100%);
+  clip-path: polygon(0 0, 50% 30%, 100% 0, 100% 100%, 0 100%);
+}
+.oe-front::before {              /* velvet grain */
+  content: ""; position: absolute; inset: 0;
+  background-image: var(--velvet);
+  opacity: 0.16; mix-blend-mode: overlay;
+}
+/* the flap, folded down over the front, with an embossed monogram */
+.oe-flap {
+  position: absolute; left: 0; right: 0; top: 32%; bottom: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  background: linear-gradient(180deg, rgba(255,225,230,0.10) 0%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0.22) 100%);
+  display: flex; align-items: flex-start; justify-content: center;
+}
+.oe-flap .mono {
+  font-family: var(--font-script);
+  font-size: clamp(26px, 4vw, 44px);
+  margin-top: 8%;
+  color: rgba(255,240,230,0.22);
+  text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+}
+
+/* ---------- 2. Rectangle picture + countdown ---------- */
+.shot { background: var(--cream); }
+.pic-frame {
+  max-width: 760px; margin: 0 auto;
+  background: var(--white);
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: 0 26px 54px rgba(59,46,36,0.16);
+}
+.pic-frame img {
+  width: 100%;
+  aspect-ratio: 4 / 3;   /* keeps the whole illustration visible, caption included */
+  object-fit: cover;
+  border-radius: 5px;
+  border: 1px solid rgba(184,144,31,0.3);
+}
+.countdown {
+  display: flex; flex-wrap: nowrap; gap: 14px;
+  justify-content: center;
+  max-width: 560px; margin: 40px auto 0;
+}
+.countdown .unit {
+  flex: 1 1 0; min-width: 0;
+  background: var(--white);
+  border: 1px solid rgba(184,144,31,0.3);
+  border-radius: 12px;
+  padding: 20px 8px;
+  text-align: center;
+  box-shadow: 0 14px 30px rgba(59,46,36,0.08);
+}
+.countdown .num { display: block; font-family: var(--font-heading); font-size: clamp(26px, 5.5vw, 38px); color: var(--gold); line-height: 1; }
+.countdown .lbl { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); margin-top: 8px; display: block; }
+
+/* ---------- 3. Heart with text ---------- */
+.love { background: var(--ivory); }
+.heart-wrap { display: flex; justify-content: center; }
+.heart {
+  position: relative;
+  width: min(460px, 88vw);
+  aspect-ratio: 1 / 0.92;
+  display: flex; align-items: center; justify-content: center;
+}
+.heart svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.heart .heart-text {
+  position: relative; z-index: 2;
+  font-family: var(--font-script);
+  font-size: clamp(26px, 5.4vw, 42px);
+  color: var(--blush);
+  text-align: center;
+  padding: 0 22%;
+  margin-top: -6%;
+  line-height: 1.2;
+}
+.heart-path {
+  fill: rgba(197,143,122,0.08);
+  stroke: var(--blush);
+  stroke-width: 3;
+  stroke-dasharray: 1400;
+  stroke-dashoffset: 1400;
+}
+.heart.in .heart-path { animation: drawHeart 2.4s var(--ease) forwards; }
+@keyframes drawHeart { to { stroke-dashoffset: 0; } }
+.heart .pulse { animation: beat 2.6s ease-in-out infinite; transform-origin: center; }
+@keyframes beat { 0%,100% { transform: scale(1); } 18% { transform: scale(1.045); } 32% { transform: scale(0.99); } }
+
+/* ---------- 4. Moments grid ---------- */
+.moments { background: var(--cream); }
+.m-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.m-grid figure { background: var(--white); padding: 10px 10px 0; border-radius: 8px; box-shadow: 0 16px 34px rgba(59,46,36,0.12); cursor: pointer; transition: transform 0.5s var(--ease), box-shadow 0.5s; }
+.m-grid figure:hover { transform: translateY(-7px); box-shadow: 0 26px 46px rgba(59,46,36,0.2); }
+.m-grid img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 5px; }
+.m-grid figcaption { font-family: var(--font-script); font-size: 24px; color: var(--gold); text-align: center; padding: 8px 0 12px; }
+
+/* ---------- 5. Event + map ---------- */
+.event-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; text-align: left; }
+.ev-card { background: var(--white); border: 1px solid rgba(184,144,31,0.25); border-radius: 14px; padding: 30px; box-shadow: 0 18px 40px rgba(59,46,36,0.1); }
+.ev-card h3 { font-family: var(--font-heading); font-size: 24px; color: var(--gold); margin-bottom: 10px; }
+.ev-card p { color: var(--ink-soft); margin-bottom: 4px; }
+.map { margin-top: 16px; border-radius: 10px; overflow: hidden; border: 1px solid rgba(184,144,31,0.28); }
+.map iframe { width: 100%; height: 210px; border: 0; display: block; }
+.btn { display: inline-block; margin-top: 18px; padding: 12px 26px; border-radius: 999px; background: var(--gold); color: #fff; font-size: 13px; letter-spacing: 0.13em; text-transform: uppercase; transition: transform 0.3s var(--ease), background 0.3s; }
+.btn:hover { transform: translateY(-3px); background: var(--gold-lt); }
+
+/* ---------- 6. Gift ---------- */
+.gift { background: var(--ivory); }
+.gift-card { max-width: 480px; margin: 0 auto; background: var(--white); border-radius: 18px; padding: 42px 32px; box-shadow: 0 24px 50px rgba(59,46,36,0.14); position: relative; }
+.gift-card::before { content: ""; position: absolute; inset: 10px; border: 1px dashed rgba(184,144,31,0.45); border-radius: 12px; pointer-events: none; }
+.gift-card img { width: 190px; margin: 18px auto 14px; border-radius: 10px; border: 6px solid var(--cream); }
+.gift-card .small { font-size: 14px; color: var(--ink-soft); opacity: 0.75; }
+
+/* ---------- 7. Closing ---------- */
+.closing { background: linear-gradient(180deg, var(--cream), var(--sand)); text-align: center; padding: 100px 24px 80px; }
+.closing .script { font-family: var(--font-script); font-size: clamp(42px, 8vw, 76px); color: var(--gold); line-height: 1.05; }
+.closing .nm { font-family: var(--font-heading); font-size: clamp(22px, 3.4vw, 30px); margin-top: 10px; }
+.closing .thanks { color: var(--ink-soft); margin-top: 14px; letter-spacing: 0.1em; }
+
+/* ---------- lightbox ---------- */
+.lightbox { position: fixed; inset: 0; z-index: 200; background: rgba(28,20,14,0.93); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.4s, visibility 0.4s; }
+.lightbox.active { opacity: 1; visibility: visible; }
+.lightbox img { max-width: 88vw; max-height: 82vh; border-radius: 8px; }
+.lightbox .lx { position: absolute; width: 46px; height: 46px; border: none; border-radius: 50%; background: rgba(255,255,255,0.15); color: #fff; font-size: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.lightbox .lx:hover { background: rgba(255,255,255,0.3); }
+.lx-close { top: 24px; right: 24px; } .lx-prev { left: 20px; top: 50%; transform: translateY(-50%); } .lx-next { right: 20px; top: 50%; transform: translateY(-50%); }
+
+/* ---------- responsive ---------- */
+/* on portrait screens a 52%-tall flap becomes an ultra-steep V — flatten it
+   and rebalance the seal / names for the full-screen envelope */
+@media (max-aspect-ratio: 1/1) {
+  .intro { --flapH: 36%; }
+  .lace { height: 26px; }
+  .lace::before { height: 13px; }
+  .lace::after { top: 13px; height: 12px; }
+}
+
+@media (max-width: 820px) {
+  .event-grid { grid-template-columns: 1fr; }
+  .m-grid { grid-template-columns: repeat(2, 1fr); }
+  .sec { padding: 80px 20px; }
+  .oe-card { width: 92%; padding: 9px; }
+  .oe-card-in { padding: 30px 14px 150px; }
+  .oe-env { height: 216px; }
+  .opened-env { padding-bottom: 62px; }
+}
+@media (max-width: 420px) {
+  .countdown { gap: 8px; }
+  .countdown .unit { padding: 15px 5px; }
+  .countdown .lbl { font-size: 9.5px; letter-spacing: 0.05em; }
+  .m-grid figcaption { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .envelope, .petals i, .heart .pulse, .env-names.lit .line { animation: none; }
+  .env-names .line span { animation: none; opacity: 1; transform: none; filter: none; }
+  .rv { transition: opacity 0.4s ease; transform: none; }
+  .heart.in .heart-path { animation: none; stroke-dashoffset: 0; }
+}
