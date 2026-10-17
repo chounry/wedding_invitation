@@ -1,29 +1,47 @@
-/* Velvet Curtain: deep burgundy velvet and gold, theatre curtains part to open. */
+/* Velvet Curtain: deep burgundy velvet and gold.
+   Flow: the curtains part but stay gathered at the sides as a stage frame;
+   the page plays as full-screen "Acts" that snap into place.
+   Signature: a spotlight that follows the pointer (and drifts on its own
+   on touch screens), iris reveals, titles that rise letter by letter.      */
+@property --mx { syntax: "<length-percentage>"; inherits: false; initial-value: 50%; }
+@property --my { syntax: "<length-percentage>"; inherits: false; initial-value: 35%; }
 :root {
-  --bg: #f2ede4;
+  --bg: #2a0606;
   --surface: #fbf8f2;
-  --ink: #3b1515;
-  --muted: #8b7355;
-  --accent: #7a1212;
-  --accent-2: #7a1212;
-  --line: rgba(139, 115, 85, 0.35);
-  --on-accent: #f2ede4;
+  --ink: #f2ede4;
+  --muted: #c9b59a;
+  --accent: #c9a882;
+  --accent-2: #e2c7a0;
+  --line: rgba(201, 168, 130, 0.4);
+  --on-accent: #2a0606;
+  --velvet: #7a1212;
   --gold: #c9a882;
   --gold-hi: #e2c7a0;
+  --paper-ink: #3b1515;
   --font-script: "Pinyon Script", cursive;
   --font-head: "Cormorant Garamond", Georgia, serif;
   --font-body: "Cormorant Garamond", Georgia, serif;
   --font-ui: "Inter", system-ui, sans-serif;
   --radius: 2px;
+  --wing: 7vw;
 }
-.eyebrow, .countdown .lbl, .tl-day, .btn, .rsvp-form label, .intro-hint, .hero .date, .kick {
+html { scroll-snap-type: y proximity; }
+body {
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 9px),
+    radial-gradient(ellipse at 50% 0, #5e0d0d, var(--bg) 70%) fixed;
+}
+.eyebrow, .countdown .lbl, .tl-day, .btn, .rsvp-form label, .intro-hint, .hero .date, .kick, .act, .scroll-cue {
   font-family: var(--font-ui); font-weight: 400;
 }
-.eyebrow { font-size: 11px; letter-spacing: 0.45em; }
+.eyebrow { font-size: 11px; letter-spacing: 0.45em; color: var(--gold); }
 
-/* ---------- Intro: stage + curtains ---------- */
-.intro { background: radial-gradient(ellipse at 50% 60%, #3a1010 0%, #140404 70%); }
-.stage { position: relative; z-index: 1; text-align: center; color: var(--gold-hi); padding: 0 24px; }
+/* ---------- Intro: stage + curtains (they stay as the frame) ---------- */
+.intro { background: radial-gradient(ellipse at 50% 60%, #3a1010 0%, #140404 70%); transition: background 1s; }
+.intro.keep { z-index: 60; }
+body.opened .intro { background: transparent; pointer-events: none; }
+.stage { position: relative; z-index: 1; text-align: center; color: var(--gold-hi); padding: 0 24px; transition: opacity 0.8s; }
+body.opened .stage { opacity: 0; }
 .stage .kick { font-size: 11px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); }
 .stage-names { font-family: var(--font-head); font-size: clamp(42px, 9vw, 84px); line-height: 1.1; margin: 14px 0; font-weight: 500; }
 .stage-names .script { display: block; font-size: 0.6em; color: var(--gold); }
@@ -32,13 +50,12 @@
   position: absolute; top: 0; bottom: 0; width: 51%; z-index: 2;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.45)),
-    repeating-linear-gradient(90deg,
-      #4a0808 0, #7a1212 4%, #9c1c1c 6.5%, #7a1212 9%, #4a0808 13%);
+    repeating-linear-gradient(90deg, #4a0808 0, #7a1212 4%, #9c1c1c 6.5%, #7a1212 9%, #4a0808 13%);
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
   transition: transform 1.9s cubic-bezier(0.7, 0, 0.2, 1);
 }
-.curtain.l { left: 0; transform-origin: 0 0; }
-.curtain.r { right: 0; transform-origin: 100% 0; }
+.curtain.l { left: 0; transform-origin: 0 50%; }
+.curtain.r { right: 0; transform-origin: 100% 50%; }
 .curtain::after {
   content: ""; position: absolute; top: 0; bottom: 0; width: 4px;
   background: linear-gradient(180deg, var(--gold-hi), var(--gold), var(--gold-hi));
@@ -52,39 +69,100 @@
     linear-gradient(180deg, #5a0c0c, #7a1212);
   border-bottom: 3px solid var(--gold);
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5));
-  transition: transform 1.4s var(--ease) 0.5s;
+  transition: height 1.4s var(--ease) 0.4s;
 }
 .intro-hint { color: var(--gold-hi); z-index: 4; font-size: 11px; }
 
-body.opening .curtain.l { transform: translateX(-92%) scaleX(0.35) skewX(4deg); }
-body.opening .curtain.r { transform: translateX(92%) scaleX(0.35) skewX(-4deg); }
-body.opening .valance { transform: translateY(-110%); }
-
-/* ---------- Content ---------- */
-.hero, .s-count, .s-rsvp, .closing {
-  background:
-    radial-gradient(ellipse at 50% 0, rgba(226, 199, 160, 0.14), transparent 60%),
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0 2px, transparent 2px 9px),
-    #5e0d0d;
-  color: var(--bg);
+/* gathered: squeeze each curtain into a narrow wing (scaleX bunches the folds) */
+body.opening .curtain.l, body.opening .curtain.r { transform: scaleX(0.14); }
+body.opening .valance { height: 44px; }
+@media (max-width: 720px) {
+  :root { --wing: 5vw; }
+  body.opening .curtain.l, body.opening .curtain.r { transform: scaleX(0.1); }
 }
-.hero .eyebrow, .s-count .eyebrow, .s-rsvp .eyebrow, .divider { color: var(--gold); }
-.hero .amp, .closing .script, .s-rsvp .rsvp-done .script { color: var(--gold-hi); }
-.hero .place, .closing .thanks { color: var(--gold); }
-.hero .names { font-weight: 400; }
-.hero .date { font-size: 13px; letter-spacing: 0.4em; }
-.title { font-weight: 400; font-style: italic; }
+
+/* ---------- Spotlight ---------- */
+.spotlight {
+  position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: 0;
+  background: radial-gradient(circle 46vmax at var(--mx) var(--my), transparent 0, rgba(10, 0, 0, 0.18) 45%, rgba(10, 0, 0, 0.62) 100%);
+  transition: opacity 1.5s;
+  animation: roam 16s ease-in-out infinite;
+}
+body.opened .spotlight { opacity: 1; }
+.spotlight.follow { animation: none; transition: opacity 1.5s, --mx 0.25s linear, --my 0.25s linear; }
+@keyframes roam {
+  0%, 100% { --mx: 50%; --my: 32%; }
+  25% { --mx: 30%; --my: 48%; }
+  50% { --mx: 68%; --my: 40%; }
+  75% { --mx: 46%; --my: 60%; }
+}
+
+/* ---------- Acts ---------- */
+.content { padding: 0 var(--wing); }
+.sec {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  scroll-snap-align: start; padding-top: 80px; padding-bottom: 80px;
+}
+.sec > .wrap { width: 100%; }
+.act {
+  display: inline-block; font-size: 11px; letter-spacing: 0.5em; text-transform: uppercase;
+  color: var(--bg); background: var(--gold); padding: 5px 12px 5px 16px; margin-bottom: 16px;
+}
+
+/* iris: each act opens like a spotlight widening. A mask rather than
+   clip-path, because IntersectionObserver treats a clipped element as
+   invisible and the reveal would never fire. */
+@property --iris { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.iris.rv {
+  opacity: 1; transform: none;
+  -webkit-mask-image: radial-gradient(circle at 50% 45%, #000 var(--iris), transparent calc(var(--iris) + 12%));
+  mask-image: radial-gradient(circle at 50% 45%, #000 var(--iris), transparent calc(var(--iris) + 12%));
+  transition: --iris 1.8s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.iris.rv.in { --iris: 150%; }
+
+/* titles rise letter by letter */
+.title { font-weight: 400; font-style: italic; color: var(--gold-hi); }
+.title.rv { opacity: 1; transform: none; }
+.title span { display: inline-block; opacity: 0; transform: translateY(0.6em) rotate(8deg); transition: opacity 0.5s, transform 0.8s var(--ease); transition-delay: calc(0.5s + var(--i) * 45ms); }
+.title.in span { opacity: 1; transform: none; }
+
 .divider::before { background: linear-gradient(90deg, transparent, var(--gold)); }
 .divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
+.divider { color: var(--gold); }
 
-.s-count .countdown .unit { background: transparent; border: 0; border-bottom: 1px solid var(--gold); border-radius: 0; }
-.s-count .num { color: var(--gold-hi); font-size: clamp(42px, 8vw, 70px); font-weight: 300; }
-.s-count .lbl { color: var(--gold); }
+.hero .amp, .closing .script { color: var(--gold-hi); }
+.hero .place, .closing .thanks, .sub { color: var(--muted); }
+.hero .names { font-weight: 400; color: var(--ink); }
+.hero .date { font-size: 13px; letter-spacing: 0.4em; color: var(--gold-hi); }
+.scroll-cue { margin-top: 46px; font-size: 10px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); }
+.scroll-cue::after { content: ""; display: block; width: 1px; height: 44px; margin: 12px auto 0; background: linear-gradient(var(--gold), transparent); animation: cue 2s ease-in-out infinite; transform-origin: top; }
+@keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
 
-.s-rsvp .rsvp-form { color: var(--ink); }
-.tl-time { font-style: italic; color: var(--accent); }
+.countdown .unit { background: transparent; border: 0; border-bottom: 1px solid var(--gold); border-radius: 0; }
+.countdown .num { color: var(--gold-hi); font-size: clamp(42px, 8vw, 72px); font-weight: 300; }
+.countdown .lbl { color: var(--gold); }
+
+.timeline::before { background: linear-gradient(transparent, var(--gold) 8%, var(--gold) 92%, transparent); }
+.tl-item::after { background: var(--bg); border-color: var(--gold); }
+.tl-time { font-style: italic; color: var(--gold-hi); }
+.tl-name { color: var(--ink); }
+.tl-desc, .tl-day { color: var(--muted); }
+
+/* paper cards on stage */
+.venue-card, .rsvp-form, .gift-card { background: var(--surface); color: var(--paper-ink); border: 0; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); }
+.venue-card .addr, .gift-card p, .rsvp-form label { color: #8b7355; }
+.rsvp-form input[type="text"], .rsvp-form input[type="number"], .rsvp-form textarea { color: var(--paper-ink); border-color: rgba(139, 115, 85, 0.4); }
+.rsvp-choice span { border-color: rgba(139, 115, 85, 0.4); font-family: var(--font-body); font-size: 17px; letter-spacing: 0.06em; }
+.rsvp-choice input:checked + span { background: var(--velvet); border-color: var(--velvet); color: #f2ede4; }
+.rsvp-done .script { color: var(--velvet); }
+.btn { font-size: 12px; letter-spacing: 0.3em; border-radius: 0; background: var(--velvet); border-color: var(--velvet); color: #f2ede4; }
+
 .gallery { gap: 4px; }
 .gallery figure { border-radius: 0; }
-.btn { font-size: 12px; letter-spacing: 0.3em; border-radius: 0; }
-.s-rsvp .btn, .venue-card .btn { background: var(--accent); }
-.swatch i { border-radius: 0; height: 84px; width: 56px; }
+.gallery figure.rv { opacity: 1; transform: none; filter: brightness(0.15); transition: filter 1.4s var(--ease); }
+.gallery figure.rv.in { filter: none; }
+.gallery figure.d2 { transition-delay: 0.25s; } .gallery figure.d3 { transition-delay: 0.5s; }
+
+.swatch { color: var(--muted); }
+.swatch i { border-radius: 0; height: 84px; width: 56px; border-color: rgba(255, 255, 255, 0.15); }

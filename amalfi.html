@@ -41,42 +41,48 @@
 
 <!-- ============ CONTENT ============ -->
 <main class="content">
+<div class="track">
 
-  <!-- Hero -->
-  <section class="sec hero">
+  <!-- Welcome -->
+  <section class="panel hero" data-title="Welcome">
+    <div class="panel-in">
     <div class="wrap">
       <div class="hero-lemons rv" aria-hidden="true"><svg class="lemon" viewBox="0 0 120 90" aria-hidden="true"><path d="M58 30 C70 4 104 6 112 22 C96 18 78 22 58 30Z" fill="#5d7d43"/><path d="M52 32 C40 8 12 10 6 26 C20 20 36 24 52 32Z" fill="#415b2e"/><ellipse cx="58" cy="56" rx="36" ry="27" fill="#f4d342"/><path d="M20 56 q-6 -3 -9 0 q3 3 9 0Z M96 56 q6 -3 9 0 q-3 3 -9 0Z" fill="#e8bf2c"/><ellipse cx="48" cy="46" rx="12" ry="6" fill="#fbeaa0" opacity=".7"/></svg><svg class="lemon" viewBox="0 0 120 90" aria-hidden="true"><path d="M58 30 C70 4 104 6 112 22 C96 18 78 22 58 30Z" fill="#5d7d43"/><path d="M52 32 C40 8 12 10 6 26 C20 20 36 24 52 32Z" fill="#415b2e"/><ellipse cx="58" cy="56" rx="36" ry="27" fill="#f4d342"/><path d="M20 56 q-6 -3 -9 0 q3 3 9 0Z M96 56 q6 -3 9 0 q-3 3 -9 0Z" fill="#e8bf2c"/><ellipse cx="48" cy="46" rx="12" ry="6" fill="#fbeaa0" opacity=".7"/></svg></div>
       <p class="eyebrow rv">Join us for a sunny celebration</p>
       <h1 class="names rv d1">Oun Chounry <span class="amp">&amp;</span> Sorm Pisey</h1>
       <p class="date rv d2">18 &middot; 19 December 2026</p>
       <p class="place rv d2">Siem Reap, Cambodia</p>
+      <p class="swipe-hint rv d3" aria-hidden="true">Swipe <span>&rarr;</span></p>
+    </div>
     </div>
   </section>
 
-  <div class="tile-band" aria-hidden="true"></div>
-
   <!-- Countdown -->
-  <section class="sec s-count">
+  <section class="panel s-count" data-title="Countdown">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">Save the Date</span>
       <h2 class="title rv">Counting the days</h2>
       <div class="divider rv"><svg class="lemon" viewBox="0 0 120 90" aria-hidden="true"><path d="M58 30 C70 4 104 6 112 22 C96 18 78 22 58 30Z" fill="#5d7d43"/><path d="M52 32 C40 8 12 10 6 26 C20 20 36 24 52 32Z" fill="#415b2e"/><ellipse cx="58" cy="56" rx="36" ry="27" fill="#f4d342"/><path d="M20 56 q-6 -3 -9 0 q3 3 9 0Z M96 56 q6 -3 9 0 q-3 3 -9 0Z" fill="#e8bf2c"/><ellipse cx="48" cy="46" rx="12" ry="6" fill="#fbeaa0" opacity=".7"/></svg></div>
       <div class="countdown rv d1">
+        <i class="ripple" aria-hidden="true"></i><i class="ripple r2" aria-hidden="true"></i><i class="ripple r3" aria-hidden="true"></i>
         <div class="unit"><span class="num" data-cd="days">0</span><span class="lbl">Days</span></div>
         <div class="unit"><span class="num" data-cd="hours">00</span><span class="lbl">Hours</span></div>
         <div class="unit"><span class="num" data-cd="minutes">00</span><span class="lbl">Minutes</span></div>
         <div class="unit"><span class="num" data-cd="seconds">00</span><span class="lbl">Seconds</span></div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- Program (placeholder times: replace with the real schedule) -->
-  <section class="sec s-program">
+  <section class="panel s-program" data-title="Program">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">Two days of celebration</span>
       <h2 class="title rv">Wedding Program</h2>
       <div class="divider rv"><svg class="lemon" viewBox="0 0 120 90" aria-hidden="true"><path d="M58 30 C70 4 104 6 112 22 C96 18 78 22 58 30Z" fill="#5d7d43"/><path d="M52 32 C40 8 12 10 6 26 C20 20 36 24 52 32Z" fill="#415b2e"/><ellipse cx="58" cy="56" rx="36" ry="27" fill="#f4d342"/><path d="M20 56 q-6 -3 -9 0 q3 3 9 0Z M96 56 q6 -3 9 0 q-3 3 -9 0Z" fill="#e8bf2c"/><ellipse cx="48" cy="46" rx="12" ry="6" fill="#fbeaa0" opacity=".7"/></svg></div>
-      <div class="timeline">
+      <div class="timeline" data-scroll>
         <div class="tl-item rv">
           <p class="tl-day">Fri 18 Dec</p>
           <p class="tl-time">7:00 AM</p>
@@ -115,12 +121,12 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 
-  <div class="tile-band" aria-hidden="true"></div>
-
   <!-- Gallery -->
-  <section class="sec s-gallery">
+  <section class="panel s-gallery" data-title="Gallery">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">Memories</span>
       <h2 class="title rv">Our Moments</h2>
@@ -134,10 +140,12 @@
         <figure class="rv d3"><img src="assets/photos/photo-6.svg" alt="The happy couple"></figure>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- Venue -->
-  <section class="sec s-venue">
+  <section class="panel s-venue" data-title="Venue">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">Where</span>
       <h2 class="title rv">The Venue</h2>
@@ -151,12 +159,12 @@
         <a class="btn" href="https://www.google.com/maps?q=Angkor+Wat,+Siem+Reap,+Cambodia" target="_blank" rel="noopener">Get Directions</a>
       </div>
     </div>
+    </div>
   </section>
 
-  <div class="tile-band" aria-hidden="true"></div>
-
   <!-- Dress code -->
-  <section class="sec s-dress">
+  <section class="panel s-dress" data-title="Dress code">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">What to wear</span>
       <h2 class="title rv">Dress Code</h2>
@@ -169,10 +177,12 @@
         <div class="swatch"><i style="background:#fffdf8"></i>White</div>
       </div>
     </div>
+    </div>
   </section>
 
   <!-- RSVP -->
-  <section class="sec s-rsvp">
+  <section class="panel s-rsvp" data-title="RSVP">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">Kindly reply by 30 November</span>
       <h2 class="title rv">RSVP</h2>
@@ -204,28 +214,43 @@
         </div>
       </form>
     </div>
+    </div>
   </section>
 
   <!-- Gift -->
-  <section class="sec s-gift">
+  <section class="panel s-gift" data-title="Gift">
+    <div class="panel-in">
     <div class="wrap center">
       <span class="eyebrow rv">With love</span>
       <h2 class="title rv">Wedding Gift</h2>
       <div class="divider rv"><svg class="lemon" viewBox="0 0 120 90" aria-hidden="true"><path d="M58 30 C70 4 104 6 112 22 C96 18 78 22 58 30Z" fill="#5d7d43"/><path d="M52 32 C40 8 12 10 6 26 C20 20 36 24 52 32Z" fill="#415b2e"/><ellipse cx="58" cy="56" rx="36" ry="27" fill="#f4d342"/><path d="M20 56 q-6 -3 -9 0 q3 3 9 0Z M96 56 q6 -3 9 0 q-3 3 -9 0Z" fill="#e8bf2c"/><ellipse cx="48" cy="46" rx="12" ry="6" fill="#fbeaa0" opacity=".7"/></svg></div>
       <p class="sub rv">Your presence is the greatest gift of all. Should you wish to honor us further, a contribution can be sent below.</p>
-      <div class="gift-card rv d1" style="margin-top:30px">
+      <div class="gift-card rv d1">
         <img src="assets/gift/qr-placeholder.svg" alt="Wedding gift QR code">
         <p>Scan with your banking app to send a gift</p>
       </div>
     </div>
+    </div>
   </section>
 
-  <!-- Closing -->
-  <footer class="closing">
-    <p class="script rv">See you there</p>
-    <p class="nm rv d1">Chounry &amp; Pisey</p>
-    <p class="thanks rv d2">With love &amp; gratitude</p>
+  <!-- Farewell -->
+  <footer class="panel closing" data-title="Farewell">
+    <div class="panel-in">
+    <div class="wrap">
+      <p class="script rv">See you there</p>
+      <p class="nm rv d1">Chounry &amp; Pisey</p>
+      <p class="thanks rv d2">With love &amp; gratitude</p>
+    </div>
+    </div>
   </footer>
+
+</div>
+<nav class="pager" aria-label="Pages">
+  <button class="pager-prev" type="button" aria-label="Previous page">&#8249;</button>
+  <div class="pager-dots"></div>
+  <span class="pager-count">01 / 09</span>
+  <button class="pager-next" type="button" aria-label="Next page">&#8250;</button>
+</nav>
 </main>
 
 <!-- Lightbox -->

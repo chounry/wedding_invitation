@@ -175,7 +175,7 @@ body.opening .intro-hint { opacity: 0; animation: none; }
   background: transparent; color: var(--ink); font: inherit; font-size: 18px;
 }
 .rsvp-form input:focus, .rsvp-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-.rsvp-choice { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rsvp-choice { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
 .rsvp-choice input { position: absolute; opacity: 0; pointer-events: none; }
 .rsvp-choice span {
   display: block; text-align: center; padding: 12px; border-radius: 10px; cursor: pointer;
@@ -191,7 +191,7 @@ body.opening .intro-hint { opacity: 0; animation: none; }
 
 /* Gift */
 .gift-card {
-  max-width: 340px; margin: 0 auto; padding: 26px; border-radius: var(--radius);
+  max-width: 340px; margin: 30px auto 0; padding: 26px; border-radius: var(--radius);
   background: var(--surface); border: 1px solid var(--line);
 }
 .gift-card img { width: 210px; margin: 0 auto 14px; border-radius: 8px; }
