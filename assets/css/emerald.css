@@ -1,0 +1,87 @@
+/* Emerald Seal: deep green envelope closed with a champagne wax seal. */
+:root {
+  --bg: #f5f0e7;
+  --surface: #fffdf7;
+  --ink: #12352a;
+  --muted: #6f7a72;
+  --accent: #b39a68;
+  --accent-2: #0b382b;
+  --line: rgba(179, 154, 104, 0.45);
+  --on-accent: #fffdf7;
+  --green: #0b382b;
+  --green-deep: #031e16;
+  --champagne: #d8c7a5;
+  --font-script: "Great Vibes", cursive;
+  --font-head: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+}
+
+/* ---------- Intro: envelope back ---------- */
+.intro { background: var(--green-deep); color: var(--champagne); perspective: 1400px; }
+.env { position: absolute; inset: 0; }
+.env-side, .env-bottom, .env-flap { position: absolute; inset: 0; }
+.env-side.l { background: linear-gradient(100deg, #0e4535, #0a3628); clip-path: polygon(0 0, 52% 54%, 0 100%); }
+.env-side.r { background: linear-gradient(260deg, #0e4535, #0a3628); clip-path: polygon(100% 0, 48% 54%, 100% 100%); }
+.env-bottom { background: linear-gradient(0deg, #0d4031, #0b382b); clip-path: polygon(0 100%, 50% 46%, 100% 100%); }
+.env-flap {
+  background:
+    radial-gradient(circle at 50% 0, rgba(216, 199, 165, 0.12), transparent 60%),
+    linear-gradient(180deg, #145643, #0c3e30);
+  clip-path: polygon(0 0, 100% 0, 50% 56%);
+  transform-origin: 50% 0;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+  transition: transform 1.1s var(--ease) 0.45s, opacity 0.6s 0.9s;
+}
+.env-to {
+  position: absolute; top: 18%; left: 0; right: 0; text-align: center; z-index: 2;
+  font-family: var(--font-script); font-size: clamp(30px, 6vw, 48px); color: var(--champagne);
+  transition: opacity 0.4s;
+}
+.seal {
+  position: absolute; left: 50%; top: 56%; width: 132px; height: 132px;
+  margin: -66px 0 0 -66px; z-index: 3;
+}
+.seal-half {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #f1e4c6, #d8c7a5 45%, #a88f5f 100%);
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.18), inset 0 0 0 9px rgba(120, 95, 50, 0.35), 0 8px 18px rgba(0, 0, 0, 0.45);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform 0.8s var(--ease), opacity 0.6s 0.3s;
+}
+.seal-half.l { clip-path: polygon(0 0, 54% 0, 46% 30%, 56% 55%, 44% 78%, 50% 100%, 0 100%); }
+.seal-half.r { clip-path: polygon(54% 0, 100% 0, 100% 100%, 50% 100%, 44% 78%, 56% 55%, 46% 30%); }
+.seal-half span { font-family: var(--font-script); font-size: 46px; color: #7a6338; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+
+body.opening .seal-half.l { transform: translate(-60px, 30px) rotate(-28deg); opacity: 0; }
+body.opening .seal-half.r { transform: translate(60px, 30px) rotate(28deg); opacity: 0; }
+body.opening .env-flap { transform: rotateX(180deg); opacity: 0; }
+body.opening .env-to { opacity: 0; }
+.intro-hint { color: var(--champagne); }
+
+/* ---------- Content ---------- */
+.hero, .s-count, .closing {
+  background:
+    radial-gradient(circle at 50% 0, rgba(216, 199, 165, 0.12), transparent 60%),
+    var(--green);
+  color: var(--bg);
+}
+.hero .place, .closing .thanks { color: var(--champagne); }
+.hero .wrap { position: relative; padding: 70px 30px; }
+.frame-corners i {
+  position: absolute; width: 60px; height: 60px; border: 1px solid var(--champagne);
+}
+.frame-corners i:nth-child(1) { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.frame-corners i:nth-child(2) { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.frame-corners i:nth-child(3) { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.frame-corners i:nth-child(4) { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+.hero .amp, .closing .script { color: var(--champagne); }
+
+.s-count .countdown .unit { background: transparent; border-color: rgba(216, 199, 165, 0.45); }
+.s-count .num { color: var(--champagne); }
+.s-count .lbl { color: rgba(245, 240, 231, 0.7); }
+
+.venue-card, .rsvp-form, .gift-card {
+  outline: 1px solid var(--line); outline-offset: -8px;
+}
+.timeline .tl-item::after { background: var(--accent); border-color: var(--bg); box-shadow: 0 0 0 1px var(--accent); }
+.gallery figure { border-radius: 4px; outline: 1px solid var(--line); outline-offset: 5px; }

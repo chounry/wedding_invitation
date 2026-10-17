@@ -1,0 +1,90 @@
+/* Velvet Curtain: deep burgundy velvet and gold, theatre curtains part to open. */
+:root {
+  --bg: #f2ede4;
+  --surface: #fbf8f2;
+  --ink: #3b1515;
+  --muted: #8b7355;
+  --accent: #7a1212;
+  --accent-2: #7a1212;
+  --line: rgba(139, 115, 85, 0.35);
+  --on-accent: #f2ede4;
+  --gold: #c9a882;
+  --gold-hi: #e2c7a0;
+  --font-script: "Pinyon Script", cursive;
+  --font-head: "Cormorant Garamond", Georgia, serif;
+  --font-body: "Cormorant Garamond", Georgia, serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --radius: 2px;
+}
+.eyebrow, .countdown .lbl, .tl-day, .btn, .rsvp-form label, .intro-hint, .hero .date, .kick {
+  font-family: var(--font-ui); font-weight: 400;
+}
+.eyebrow { font-size: 11px; letter-spacing: 0.45em; }
+
+/* ---------- Intro: stage + curtains ---------- */
+.intro { background: radial-gradient(ellipse at 50% 60%, #3a1010 0%, #140404 70%); }
+.stage { position: relative; z-index: 1; text-align: center; color: var(--gold-hi); padding: 0 24px; }
+.stage .kick { font-size: 11px; letter-spacing: 0.45em; text-transform: uppercase; color: var(--gold); }
+.stage-names { font-family: var(--font-head); font-size: clamp(42px, 9vw, 84px); line-height: 1.1; margin: 14px 0; font-weight: 500; }
+.stage-names .script { display: block; font-size: 0.6em; color: var(--gold); }
+
+.curtain {
+  position: absolute; top: 0; bottom: 0; width: 51%; z-index: 2;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.45)),
+    repeating-linear-gradient(90deg,
+      #4a0808 0, #7a1212 4%, #9c1c1c 6.5%, #7a1212 9%, #4a0808 13%);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
+  transition: transform 1.9s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.curtain.l { left: 0; transform-origin: 0 0; }
+.curtain.r { right: 0; transform-origin: 100% 0; }
+.curtain::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 4px;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold), var(--gold-hi));
+}
+.curtain.l::after { right: 0; }
+.curtain.r::after { left: 0; }
+.valance {
+  position: absolute; top: 0; left: 0; right: 0; height: 12vh; z-index: 3;
+  background:
+    radial-gradient(ellipse at 50% 0, #9c1c1c 0 60%, transparent 61%) 0 100% / 120px 40px repeat-x,
+    linear-gradient(180deg, #5a0c0c, #7a1212);
+  border-bottom: 3px solid var(--gold);
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5));
+  transition: transform 1.4s var(--ease) 0.5s;
+}
+.intro-hint { color: var(--gold-hi); z-index: 4; font-size: 11px; }
+
+body.opening .curtain.l { transform: translateX(-92%) scaleX(0.35) skewX(4deg); }
+body.opening .curtain.r { transform: translateX(92%) scaleX(0.35) skewX(-4deg); }
+body.opening .valance { transform: translateY(-110%); }
+
+/* ---------- Content ---------- */
+.hero, .s-count, .s-rsvp, .closing {
+  background:
+    radial-gradient(ellipse at 50% 0, rgba(226, 199, 160, 0.14), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.12) 0 2px, transparent 2px 9px),
+    #5e0d0d;
+  color: var(--bg);
+}
+.hero .eyebrow, .s-count .eyebrow, .s-rsvp .eyebrow, .divider { color: var(--gold); }
+.hero .amp, .closing .script, .s-rsvp .rsvp-done .script { color: var(--gold-hi); }
+.hero .place, .closing .thanks { color: var(--gold); }
+.hero .names { font-weight: 400; }
+.hero .date { font-size: 13px; letter-spacing: 0.4em; }
+.title { font-weight: 400; font-style: italic; }
+.divider::before { background: linear-gradient(90deg, transparent, var(--gold)); }
+.divider::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+.s-count .countdown .unit { background: transparent; border: 0; border-bottom: 1px solid var(--gold); border-radius: 0; }
+.s-count .num { color: var(--gold-hi); font-size: clamp(42px, 8vw, 70px); font-weight: 300; }
+.s-count .lbl { color: var(--gold); }
+
+.s-rsvp .rsvp-form { color: var(--ink); }
+.tl-time { font-style: italic; color: var(--accent); }
+.gallery { gap: 4px; }
+.gallery figure { border-radius: 0; }
+.btn { font-size: 12px; letter-spacing: 0.3em; border-radius: 0; }
+.s-rsvp .btn, .venue-card .btn { background: var(--accent); }
+.swatch i { border-radius: 0; height: 84px; width: 56px; }
