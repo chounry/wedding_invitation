@@ -3,34 +3,43 @@
    Signature: gold flourishes that draw themselves, widening eyebrows,
    flip-clock countdown, a timeline line that draws as you scroll.        */
 :root {
+  --green: #0b382b;
+  --green-deep: #031e16;
+  --green-hi: #145643;
+  --champagne: #d8c7a5;
   --bg: #f5f0e7;
   --surface: #fffdf7;
   --ink: #12352a;
   --muted: #6f7a72;
   --accent: #b39a68;
-  --accent-2: #0b382b;
-  --line: rgba(179, 154, 104, 0.45);
-  --on-accent: #fffdf7;
-  --green: #0b382b;
-  --green-deep: #031e16;
-  --champagne: #d8c7a5;
-  --font-script: "Great Vibes", cursive;
-  --font-head: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Cormorant Garamond", Georgia, serif;
+  --accent-2: var(--green);
+  --line: color-mix(in srgb, var(--accent) 45%, transparent);
+  --on-accent: var(--surface);
+  --env-a: color-mix(in srgb, var(--green) 60%, var(--green-hi));
+  --env-b: color-mix(in srgb, var(--green) 90%, var(--green-deep));
+  --env-c: color-mix(in srgb, var(--green) 80%, var(--green-hi));
+  --env-d: color-mix(in srgb, var(--green) 85%, var(--green-hi));
+  --font-script: "Great Vibes", "Moul", cursive;
+  --font-head: "Cormorant Garamond", "Noto Serif Khmer", Georgia, serif;
+  --font-body: "Cormorant Garamond", "Noto Serif Khmer", Georgia, serif;
 }
+/* Palettes: listed in assets/js/palette.js */
+:root[data-palette="sapphire"] { --green: #13294b; --green-deep: #08142a; --green-hi: #1f3d6b; --champagne: #d9c9a3; --bg: #f3f1ec; --surface: #fffdf9; --ink: #15233d; --muted: #6b7280; --accent: #b49a64; }
+:root[data-palette="burgundy"] { --green: #5a1a24; --green-deep: #2e0a10; --green-hi: #7a2a35; --champagne: #ecd0bb; --bg: #f8f0ec; --surface: #fffaf7; --ink: #4a1720; --muted: #86706f; --accent: #b98a6e; }
+:root[data-palette="onyx"] { --green: #1c1c1e; --green-deep: #0b0b0c; --green-hi: #2f2f33; --champagne: #d9c290; --bg: #f4f2ee; --surface: #ffffff; --ink: #1f1f22; --muted: #75736e; --accent: #b89a5e; }
 
 /* ---------- Intro: envelope back ---------- */
 .intro { background: var(--green-deep); color: var(--champagne); perspective: 1400px; }
 .env { position: absolute; inset: 0; }
 .env-side, .env-bottom, .env-flap { position: absolute; inset: 0; z-index: 2; }
-.env-side.l { background: linear-gradient(100deg, #0e4535, #0a3628); clip-path: polygon(0 0, 52% 54%, 0 100%); }
-.env-side.r { background: linear-gradient(260deg, #0e4535, #0a3628); clip-path: polygon(100% 0, 48% 54%, 100% 100%); }
-.env-bottom { background: linear-gradient(0deg, #0d4031, #0b382b); clip-path: polygon(0 100%, 50% 46%, 100% 100%); }
+.env-side.l { background: linear-gradient(100deg, var(--env-a), var(--env-b)); clip-path: polygon(0 0, 52% 54%, 0 100%); }
+.env-side.r { background: linear-gradient(260deg, var(--env-a), var(--env-b)); clip-path: polygon(100% 0, 48% 54%, 100% 100%); }
+.env-bottom { background: linear-gradient(0deg, var(--env-c), var(--green)); clip-path: polygon(0 100%, 50% 46%, 100% 100%); }
 .env-flap {
   z-index: 3;
   background:
-    radial-gradient(circle at 50% 0, rgba(216, 199, 165, 0.12), transparent 60%),
-    linear-gradient(180deg, #145643, #0c3e30);
+    radial-gradient(circle at 50% 0, color-mix(in srgb, var(--champagne) 12%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--green-hi), var(--env-d));
   clip-path: polygon(0 0, 100% 0, 50% 56%);
   transform-origin: 50% 0;
   filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
@@ -47,24 +56,24 @@
 }
 .seal-half {
   position: absolute; inset: 0; border-radius: 50%;
-  background: radial-gradient(circle at 38% 32%, #f1e4c6, #d8c7a5 45%, #a88f5f 100%);
-  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.18), inset 0 0 0 9px rgba(120, 95, 50, 0.35), 0 8px 18px rgba(0, 0, 0, 0.45);
+  background: radial-gradient(circle at 38% 32%, color-mix(in srgb, var(--champagne) 60%, #fff), var(--champagne) 45%, color-mix(in srgb, var(--accent) 93%, #000) 100%);
+  box-shadow: inset 0 0 0 7px rgba(255, 255, 255, 0.18), inset 0 0 0 9px color-mix(in srgb, color-mix(in srgb, var(--accent) 60%, #000) 35%, transparent), 0 8px 18px rgba(0, 0, 0, 0.45);
   display: flex; align-items: center; justify-content: center;
   transition: transform 0.8s var(--ease), opacity 0.6s 0.3s;
 }
 .seal-half.l { clip-path: polygon(0 0, 54% 0, 46% 30%, 56% 55%, 44% 78%, 50% 100%, 0 100%); }
 .seal-half.r { clip-path: polygon(54% 0, 100% 0, 100% 100%, 50% 100%, 44% 78%, 56% 55%, 46% 30%); }
-.seal-half span { font-family: var(--font-script); font-size: 46px; color: #7a6338; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
+.seal-half span { font-family: var(--font-script); font-size: 46px; color: color-mix(in srgb, var(--accent) 68%, #000); text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5); }
 
 /* The card hides inside the envelope (behind the pockets), rises out of it,
    then jumps in front and grows to fill the screen, matching the hero. */
 .card-out {
   position: absolute; inset: 0; z-index: 1;
-  background: radial-gradient(circle at 50% 0, rgba(216, 199, 165, 0.12), transparent 60%), var(--green);
+  background: radial-gradient(circle at 50% 0, color-mix(in srgb, var(--champagne) 12%, transparent), transparent 60%), var(--green);
   color: var(--bg); text-align: center;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   transform: translateY(18%) scale(0.56);
-  box-shadow: 0 0 0 1px rgba(216, 199, 165, 0.6), 0 30px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--champagne) 60%, transparent), 0 30px 60px rgba(0, 0, 0, 0.5);
 }
 .card-out .frame-corners { position: absolute; inset: 22% 8%; }
 .co-kick { font-size: 13px; letter-spacing: 0.38em; text-transform: uppercase; color: var(--accent); }
@@ -87,7 +96,7 @@ body.opening .env-to { opacity: 0; }
 /* ---------- Content ---------- */
 .hero, .s-count, .closing {
   background:
-    radial-gradient(circle at 50% 0, rgba(216, 199, 165, 0.12), transparent 60%),
+    radial-gradient(circle at 50% 0, color-mix(in srgb, var(--champagne) 12%, transparent), transparent 60%),
     var(--green);
   color: var(--bg);
 }
@@ -115,12 +124,12 @@ body.opening .env-to { opacity: 0; }
 .hero .divider .flourish, .s-count .flourish, .closing .flourish { color: var(--champagne); }
 
 /* flip-clock countdown */
-.s-count .countdown .unit { background: rgba(3, 30, 22, 0.55); border-color: rgba(216, 199, 165, 0.45); perspective: 300px; position: relative; overflow: hidden; }
+.s-count .countdown .unit { background: color-mix(in srgb, var(--green-deep) 55%, transparent); border-color: color-mix(in srgb, var(--champagne) 45%, transparent); perspective: 300px; position: relative; overflow: hidden; }
 .s-count .countdown .unit::after { content: ""; position: absolute; left: 0; right: 0; top: 46%; height: 1px; background: rgba(0, 0, 0, 0.45); }
 .s-count .num { color: var(--champagne); transform-origin: 50% 46%; }
 .s-count .num.flip { animation: flipDown 0.55s var(--ease); }
 @keyframes flipDown { 0% { transform: rotateX(90deg); opacity: 0.2; } 100% { transform: none; opacity: 1; } }
-.s-count .lbl { color: rgba(245, 240, 231, 0.7); }
+.s-count .lbl { color: color-mix(in srgb, var(--bg) 70%, transparent); }
 
 /* timeline draws as you scroll through it */
 .timeline::before { transform-origin: 50% 0; transform: scaleY(min(1, calc(var(--p, 0) * 1.7))); }
@@ -128,7 +137,7 @@ body.opening .env-to { opacity: 0; }
 .tl-item.rv { transform: scale(0.96); }
 .tl-item.rv.in { transform: none; }
 
-.venue-card, .rsvp-form, .gift-card { outline: 1px solid var(--line); outline-offset: -8px; }
+.venue-card, .gift-card { outline: 1px solid var(--line); outline-offset: -8px; }
 .gallery figure { border-radius: 4px; outline: 1px solid var(--line); outline-offset: 5px; }
 .gallery figure.rv { transform: scale(0.92); }
 .gallery figure.rv.in { transform: none; }

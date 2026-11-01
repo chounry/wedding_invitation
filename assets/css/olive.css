@@ -11,15 +11,20 @@
   --muted: #7b7c6c;
   --accent: #7f8453;
   --accent-2: #6f7448;
-  --line: rgba(127, 132, 83, 0.35);
-  --on-accent: #fdfbf5;
   --wine: #722f37;
   --linen: #e9e4d2;
-  --font-script: "Great Vibes", cursive;
-  --font-head: "Playfair Display", Georgia, serif;
-  --font-body: "Cormorant Garamond", Georgia, serif;
+  --leaf-2: color-mix(in srgb, var(--accent) 65%, #fff);
+  --line: color-mix(in srgb, var(--accent) 35%, transparent);
+  --on-accent: var(--bg);
+  --font-script: "Great Vibes", "Moul", cursive;
+  --font-head: "Playfair Display", "Noto Serif Khmer", Georgia, serif;
+  --font-body: "Cormorant Garamond", "Noto Serif Khmer", Georgia, serif;
   --radius: 10px;
 }
+/* Palettes: listed in assets/js/palette.js */
+:root[data-palette="eucalyptus"] { --bg: #f9fbf8; --ink: #33403d; --muted: #74807c; --accent: #5f7f78; --accent-2: #4d6b65; --wine: #4b5e7a; --linen: #e2e6e0; }
+:root[data-palette="terracotta"] { --bg: #fdf8f2; --ink: #43332a; --muted: #8a776a; --accent: #b06a4a; --accent-2: #92543a; --wine: #5c6b47; --linen: #efe2d3; }
+:root[data-palette="lavender"] { --bg: #fbfaf9; --ink: #3d3846; --muted: #7e7888; --accent: #8a7fa6; --accent-2: #6f6590; --wine: #8a5a6e; --linen: #e8e3ec; }
 .sprig { width: 150px; height: 42px; color: var(--accent); }
 .divider .sprig { width: 120px; height: 33px; }
 .divider::before, .divider::after { display: none; }
@@ -28,9 +33,9 @@
 /* ---------- Intro: tri-fold letter ---------- */
 .intro {
   background:
-    repeating-linear-gradient(0deg, rgba(58, 58, 50, 0.03) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(90deg, rgba(58, 58, 50, 0.03) 0 1px, transparent 1px 4px),
-    radial-gradient(circle at 50% 40%, #f3efe2, #d9d3bc);
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--ink) 3%, transparent) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, color-mix(in srgb, var(--ink) 3%, transparent) 0 1px, transparent 1px 4px),
+    radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--linen) 60%, #fff), color-mix(in srgb, var(--linen) 93%, var(--ink)));
 }
 .letter {
   --h: min(25vh, 170px);
@@ -44,13 +49,13 @@
 .face {
   position: absolute; inset: 0; backface-visibility: hidden;
   display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-  background: linear-gradient(180deg, #fffdf8, #f8f4e9);
-  box-shadow: 0 10px 30px rgba(58, 58, 50, 0.18);
+  background: linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 70%, var(--linen)));
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--ink) 18%, transparent);
   color: var(--ink); padding: 10px 20px;
 }
-.face.out { transform: rotateX(180deg); background: linear-gradient(180deg, #f4efdf, #ebe5d0); }
-.fold.top .face.in { border-bottom: 1px dashed rgba(58, 58, 50, 0.12); justify-content: flex-end; padding-bottom: 18px; }
-.fold.bot .face.in { border-top: 1px dashed rgba(58, 58, 50, 0.12); justify-content: flex-start; padding-top: 18px; }
+.face.out { transform: rotateX(180deg); background: linear-gradient(180deg, color-mix(in srgb, var(--linen) 50%, var(--bg)), var(--linen)); }
+.fold.top .face.in { border-bottom: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent); justify-content: flex-end; padding-bottom: 18px; }
+.fold.bot .face.in { border-top: 1px dashed color-mix(in srgb, var(--ink) 12%, transparent); justify-content: flex-start; padding-top: 18px; }
 .letter .kick { font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); }
 .lt-big { font-family: var(--font-head); font-size: clamp(26px, 6vw, 34px); line-height: 1.15; }
 .lt-big .script { display: block; color: var(--accent); font-size: 0.9em; }
@@ -60,9 +65,9 @@
 .wax {
   position: absolute; bottom: -26px; left: 50%; width: 58px; height: 58px; margin-left: -29px;
   border-radius: 50%; display: flex; align-items: center; justify-content: center;
-  background: radial-gradient(circle at 35% 30%, #9a4450, var(--wine) 60%, #4f1d23);
+  background: radial-gradient(circle at 35% 30%, color-mix(in srgb, var(--wine) 80%, #fff), var(--wine) 60%, color-mix(in srgb, var(--wine) 70%, #000));
   box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.1), 0 4px 10px rgba(0, 0, 0, 0.3);
-  color: #f1d9dc; font-family: var(--font-script); font-size: 20px;
+  color: color-mix(in srgb, var(--wine) 15%, #fff); font-family: var(--font-script); font-size: 20px;
   transition: opacity 0.3s;
 }
 .intro-hint { color: var(--accent-2); }
@@ -81,13 +86,13 @@ body.opened .leaves { opacity: 1; }
   animation: fall 18s linear infinite, flutter 3.2s ease-in-out infinite;
 }
 .leaves i:nth-child(1) { left: 8%; animation-delay: 0s, 0s; }
-.leaves i:nth-child(2) { left: 22%; animation-delay: -6s, -1s; animation-duration: 22s, 3.8s; background: #a7ab85; }
+.leaves i:nth-child(2) { left: 22%; animation-delay: -6s, -1s; animation-duration: 22s, 3.8s; background: var(--leaf-2); }
 .leaves i:nth-child(3) { left: 37%; animation-delay: -12s, -2s; }
 .leaves i:nth-child(4) { left: 51%; animation-delay: -3s, -0.5s; animation-duration: 20s, 2.8s; width: 12px; height: 5px; }
-.leaves i:nth-child(5) { left: 64%; animation-delay: -15s, -1.5s; background: #a7ab85; }
+.leaves i:nth-child(5) { left: 64%; animation-delay: -15s, -1.5s; background: var(--leaf-2); }
 .leaves i:nth-child(6) { left: 76%; animation-delay: -9s, -2.5s; animation-duration: 24s, 3.5s; }
 .leaves i:nth-child(7) { left: 88%; animation-delay: -1s, -0.8s; width: 12px; height: 5px; }
-.leaves i:nth-child(8) { left: 94%; animation-delay: -17s, -1.2s; animation-duration: 21s, 3s; background: #a7ab85; }
+.leaves i:nth-child(8) { left: 94%; animation-delay: -17s, -1.2s; animation-duration: 21s, 3s; background: var(--leaf-2); }
 .leaves i:nth-child(9) { left: 3%; animation-delay: -10s, -2.2s; animation-duration: 26s, 4s; }
 @keyframes fall { to { top: 105vh; } }
 @keyframes flutter { 0%, 100% { transform: translateX(0) rotate(0deg); } 50% { transform: translateX(40px) rotate(160deg); } }
@@ -95,7 +100,7 @@ body.opened .leaves { opacity: 1; }
 /* ---------- Content ---------- */
 body {
   background:
-    repeating-linear-gradient(0deg, rgba(58, 58, 50, 0.018) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, color-mix(in srgb, var(--ink) 1.8%, transparent) 0 1px, transparent 1px 4px),
     var(--bg);
 }
 .olive-top { display: flex; justify-content: center; margin-bottom: 18px; }
@@ -133,7 +138,7 @@ body.opened .branch ellipse, body.opened .branch circle { scale: 1; transition: 
   .branch.l { left: -10px; } .branch.r { right: -10px; }
 }
 
-.s-count, .s-dress, .s-gift { background: rgba(244, 241, 230, 0.85); }
+.s-count, .s-gift { background: color-mix(in srgb, color-mix(in srgb, var(--linen) 50%, var(--bg)) 85%, transparent); }
 .countdown .unit { border-radius: 999px; min-width: 92px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; }
 .countdown .num { font-family: var(--font-head); color: var(--accent-2); }
 

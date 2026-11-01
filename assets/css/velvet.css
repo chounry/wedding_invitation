@@ -7,37 +7,44 @@
 @property --my { syntax: "<length-percentage>"; inherits: false; initial-value: 35%; }
 :root {
   --bg: #2a0606;
+  --velvet: #7a1212;
+  --velvet-dark: #4a0808;
+  --velvet-hi: #9c1c1c;
+  --gold: #c9a882;
+  --gold-hi: #e2c7a0;
   --surface: #fbf8f2;
   --ink: #f2ede4;
   --muted: #c9b59a;
-  --accent: #c9a882;
-  --accent-2: #e2c7a0;
-  --line: rgba(201, 168, 130, 0.4);
-  --on-accent: #2a0606;
-  --velvet: #7a1212;
-  --gold: #c9a882;
-  --gold-hi: #e2c7a0;
   --paper-ink: #3b1515;
-  --font-script: "Pinyon Script", cursive;
-  --font-head: "Cormorant Garamond", Georgia, serif;
-  --font-body: "Cormorant Garamond", Georgia, serif;
-  --font-ui: "Inter", system-ui, sans-serif;
+  --accent: var(--gold);
+  --accent-2: var(--gold-hi);
+  --line: color-mix(in srgb, var(--gold) 40%, transparent);
+  --on-accent: var(--bg);
+  --shade: color-mix(in srgb, var(--bg) 25%, #000);
+  --font-script: "Pinyon Script", "Moul", cursive;
+  --font-head: "Cormorant Garamond", "Noto Serif Khmer", Georgia, serif;
+  --font-body: "Cormorant Garamond", "Noto Serif Khmer", Georgia, serif;
+  --font-ui: "Inter", "Kantumruy Pro", system-ui, sans-serif;
   --radius: 2px;
   --wing: 7vw;
 }
+/* Palettes: listed in assets/js/palette.js */
+:root[data-palette="midnight"] { --bg: #070d1f; --velvet: #1b2c5a; --velvet-dark: #0f1a3a; --velvet-hi: #2c4380; --gold: #c3c9d3; --gold-hi: #e6e9ef; --muted: #a9b0bf; --ink: #eef1f6; --paper-ink: #1a2238; --surface: #f7f8fa; }
+:root[data-palette="forest"] { --bg: #03140e; --velvet: #0f4a35; --velvet-dark: #082d20; --velvet-hi: #1a6a4c; --gold: #c9a882; --gold-hi: #e2c7a0; --muted: #b8bba0; --ink: #eef0e8; --paper-ink: #12291f; --surface: #f8f8f2; }
+:root[data-palette="plum"] { --bg: #1d0819; --velvet: #5a1f4f; --velvet-dark: #3a1033; --velvet-hi: #7d3270; --gold: #dcae9f; --gold-hi: #f0cdbf; --muted: #c8a9b4; --ink: #f5ecef; --paper-ink: #3a1631; --surface: #fbf6f7; }
 html { scroll-snap-type: y proximity; }
 body {
   background:
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 9px),
-    radial-gradient(ellipse at 50% 0, #5e0d0d, var(--bg) 70%) fixed;
+    radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--velvet) 50%, var(--velvet-dark)), var(--bg) 70%) fixed;
 }
-.eyebrow, .countdown .lbl, .tl-day, .btn, .rsvp-form label, .intro-hint, .hero .date, .kick, .act, .scroll-cue {
+.eyebrow, .countdown .lbl, .tl-day, .btn, .intro-hint, .hero .date, .kick, .act, .scroll-cue {
   font-family: var(--font-ui); font-weight: 400;
 }
 .eyebrow { font-size: 11px; letter-spacing: 0.45em; color: var(--gold); }
 
 /* ---------- Intro: stage + curtains (they stay as the frame) ---------- */
-.intro { background: radial-gradient(ellipse at 50% 60%, #3a1010 0%, #140404 70%); transition: background 1s; }
+.intro { background: radial-gradient(ellipse at 50% 60%, color-mix(in srgb, var(--bg) 70%, var(--velvet)) 0%, color-mix(in srgb, var(--bg) 50%, #000) 70%); transition: background 1s; }
 .intro.keep { z-index: 60; }
 body.opened .intro { background: transparent; pointer-events: none; }
 .stage { position: relative; z-index: 1; text-align: center; color: var(--gold-hi); padding: 0 24px; transition: opacity 0.8s; }
@@ -50,7 +57,7 @@ body.opened .stage { opacity: 0; }
   position: absolute; top: 0; bottom: 0; width: 51%; z-index: 2;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.25), transparent 20%, transparent 80%, rgba(0, 0, 0, 0.45)),
-    repeating-linear-gradient(90deg, #4a0808 0, #7a1212 4%, #9c1c1c 6.5%, #7a1212 9%, #4a0808 13%);
+    repeating-linear-gradient(90deg, var(--velvet-dark) 0, var(--velvet) 4%, var(--velvet-hi) 6.5%, var(--velvet) 9%, var(--velvet-dark) 13%);
   box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.6);
   transition: transform 1.9s cubic-bezier(0.7, 0, 0.2, 1);
 }
@@ -65,8 +72,8 @@ body.opened .stage { opacity: 0; }
 .valance {
   position: absolute; top: 0; left: 0; right: 0; height: 12vh; z-index: 3;
   background:
-    radial-gradient(ellipse at 50% 0, #9c1c1c 0 60%, transparent 61%) 0 100% / 120px 40px repeat-x,
-    linear-gradient(180deg, #5a0c0c, #7a1212);
+    radial-gradient(ellipse at 50% 0, var(--velvet-hi) 0 60%, transparent 61%) 0 100% / 120px 40px repeat-x,
+    linear-gradient(180deg, color-mix(in srgb, var(--velvet) 40%, var(--velvet-dark)), var(--velvet));
   border-bottom: 3px solid var(--gold);
   filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.5));
   transition: height 1.4s var(--ease) 0.4s;
@@ -84,7 +91,7 @@ body.opening .valance { height: 44px; }
 /* ---------- Spotlight ---------- */
 .spotlight {
   position: fixed; inset: 0; z-index: 40; pointer-events: none; opacity: 0;
-  background: radial-gradient(circle 46vmax at var(--mx) var(--my), transparent 0, rgba(10, 0, 0, 0.18) 45%, rgba(10, 0, 0, 0.62) 100%);
+  background: radial-gradient(circle 46vmax at var(--mx) var(--my), transparent 0, color-mix(in srgb, var(--shade) 18%, transparent) 45%, color-mix(in srgb, var(--shade) 62%, transparent) 100%);
   transition: opacity 1.5s;
   animation: roam 16s ease-in-out infinite;
 }
@@ -150,19 +157,12 @@ body.opened .spotlight { opacity: 1; }
 .tl-desc, .tl-day { color: var(--muted); }
 
 /* paper cards on stage */
-.venue-card, .rsvp-form, .gift-card { background: var(--surface); color: var(--paper-ink); border: 0; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); }
-.venue-card .addr, .gift-card p, .rsvp-form label { color: #8b7355; }
-.rsvp-form input[type="text"], .rsvp-form input[type="number"], .rsvp-form textarea { color: var(--paper-ink); border-color: rgba(139, 115, 85, 0.4); }
-.rsvp-choice span { border-color: rgba(139, 115, 85, 0.4); font-family: var(--font-body); font-size: 17px; letter-spacing: 0.06em; }
-.rsvp-choice input:checked + span { background: var(--velvet); border-color: var(--velvet); color: #f2ede4; }
-.rsvp-done .script { color: var(--velvet); }
-.btn { font-size: 12px; letter-spacing: 0.3em; border-radius: 0; background: var(--velvet); border-color: var(--velvet); color: #f2ede4; }
+.venue-card, .gift-card { background: var(--surface); color: var(--paper-ink); border: 0; box-shadow: 0 30px 60px rgba(0, 0, 0, 0.45); }
+.venue-card .addr, .gift-card p { color: color-mix(in srgb, var(--gold) 60%, var(--paper-ink)); }
+.btn { font-size: 12px; letter-spacing: 0.3em; border-radius: 0; background: var(--velvet); border-color: var(--velvet); color: var(--ink); }
 
 .gallery { gap: 4px; }
 .gallery figure { border-radius: 0; }
 .gallery figure.rv { opacity: 1; transform: none; filter: brightness(0.15); transition: filter 1.4s var(--ease); }
 .gallery figure.rv.in { filter: none; }
 .gallery figure.d2 { transition-delay: 0.25s; } .gallery figure.d3 { transition-delay: 0.5s; }
-
-.swatch { color: var(--muted); }
-.swatch i { border-radius: 0; height: 84px; width: 56px; border-color: rgba(255, 255, 255, 0.15); }

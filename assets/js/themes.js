@@ -7,13 +7,13 @@
      [data-split]     text is split into <span style="--i"> per character
      [data-scroll]    gets --p = 0..1 as it travels through the viewport
      .track           horizontal album: dots, arrows, wheel + keys, .active panel
-     .spotlight       follows the pointer via --mx / --my                      */
+     .spotlight       follows the pointer via --mx / --my
+   Events for motion.js: "invite:open" on document, "invite:page" on each newly active .panel.
+   Listens for "invite:lang" from locale.js. */
 (function () {
   "use strict";
 
   var WEDDING_DATE = new Date("2026-12-18T07:00:00");
-  // Placeholder: replies open the guest's mail app addressed here.
-  var RSVP_EMAIL = "rsvp@example.com";
 
   var body = document.body;
   var intro = document.querySelector(".intro");
@@ -21,19 +21,27 @@
   var track = document.querySelector(".track");
   var openMs = parseInt(body.getAttribute("data-open-ms"), 10) || 1600;
 
+  var root = document.documentElement;
+  function khmer() { return root.lang === "km"; }
+  function digits(s) {
+    return khmer() ? s.replace(/\d/g, function (d) { return "០១២៣៤៥៦៧៨៩"[d]; }) : s;
+  }
+
   /* ---------- Split text into characters ---------- */
-  document.querySelectorAll("[data-split]").forEach(function (el) {
+  function split(el) {
     var text = el.textContent;
     el.setAttribute("aria-label", text);
     el.textContent = "";
-    text.split("").forEach(function (ch, i) {
+    // Khmer subscripts and vowel signs can't sit in a box of their own, so split by word
+    (khmer() ? text.split(/(\s+)/) : text.split("")).forEach(function (ch, i) {
       var s = document.createElement("span");
       s.textContent = ch === " " ? " " : ch;
       s.setAttribute("aria-hidden", "true");
       s.style.setProperty("--i", i);
       el.appendChild(s);
     });
-  });
+  }
+  document.querySelectorAll("[data-split]").forEach(split);
 
   /* ---------- Scroll reveals ---------- */
   var io = new IntersectionObserver(function (entries) {
@@ -60,6 +68,7 @@
       window.scrollTo(0, 0);
       revealAll();
       if (track) setActive(0);
+      document.dispatchEvent(new CustomEvent("invite:open"));
     }, openMs);
   }
   if (intro) {
@@ -75,6 +84,7 @@
     if (content) content.classList.add("show");
     body.classList.add("opened");
     revealAll();
+    document.dispatchEvent(new CustomEvent("invite:open"));
   }
 
   /* ---------- Scroll progress (--p) ---------- */
@@ -122,7 +132,11 @@
         d.setAttribute("aria-current", j === i ? "step" : "false");
       });
     }
-    if (counter) counter.textContent = String(i + 1).padStart(2, "0") + " / " + String(panels.length).padStart(2, "0");
+    updateCounter();
+    panels[i].dispatchEvent(new CustomEvent("invite:page", { bubbles: true }));
+  }
+  function updateCounter() {
+    if (counter) counter.textContent = digits(String(current + 1).padStart(2, "0") + " / " + String(panels.length).padStart(2, "0"));
   }
   function goTo(i) {
     i = Math.max(0, Math.min(panels.length - 1, i));
@@ -147,7 +161,6 @@
     }, { passive: true });
     document.addEventListener("keydown", function (e) {
       if (!body.classList.contains("opened") || (lb && lb.classList.contains("active"))) return;
-      if (e.target.closest && e.target.closest("input, textarea")) return;
       if (e.key === "ArrowRight" || e.key === "PageDown") { e.preventDefault(); goTo(current + 1); }
       else if (e.key === "ArrowLeft" || e.key === "PageUp") { e.preventDefault(); goTo(current - 1); }
     });
@@ -178,6 +191,7 @@
   });
   function pad(n) { return String(n).padStart(2, "0"); }
   function set(el, v) {
+    v = digits(v);
     if (el.textContent === v) return;
     el.textContent = v;
     // themes can animate .num.flip (e.g. a flip-clock turn)
@@ -194,31 +208,12 @@
   }
   if (cd.days) { tick(); setInterval(tick, 1000); }
 
-  /* ---------- RSVP ---------- */
-  var form = document.querySelector(".rsvp-form");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var data = new FormData(form);
-      var attending = data.get("attending") === "yes";
-      var lines = [
-        "Name: " + (data.get("name") || ""),
-        "Attending: " + (attending ? "Yes" : "No"),
-        attending ? "Guests: " + (data.get("guests") || "1") : "",
-        data.get("message") ? "Message: " + data.get("message") : ""
-      ].filter(Boolean);
-      var done = form.querySelector(".rsvp-done p");
-      if (done) {
-        done.textContent = attending
-          ? "We can't wait to celebrate with you."
-          : "We'll miss you, and thank you for letting us know.";
-      }
-      form.classList.add("sent");
-      window.location.href = "mailto:" + RSVP_EMAIL +
-        "?subject=" + encodeURIComponent("Wedding RSVP - " + (data.get("name") || "")) +
-        "&body=" + encodeURIComponent(lines.join("\n"));
-    });
-  }
+  /* ---------- Language switch (locale.js has already swapped the text) ---------- */
+  document.addEventListener("invite:lang", function () {
+    document.querySelectorAll("[data-split]").forEach(split);
+    if (cd.days) tick();
+    if (track && current >= 0) updateCounter();
+  });
 
   /* ---------- Lightbox ---------- */
   var imgs = Array.prototype.slice.call(document.querySelectorAll(".gallery img"));
