@@ -94,7 +94,7 @@ body.opened .leaves { opacity: 1; }
 .leaves i:nth-child(7) { left: 88%; animation-delay: -1s, -0.8s; width: 12px; height: 5px; }
 .leaves i:nth-child(8) { left: 94%; animation-delay: -17s, -1.2s; animation-duration: 21s, 3s; background: var(--leaf-2); }
 .leaves i:nth-child(9) { left: 3%; animation-delay: -10s, -2.2s; animation-duration: 26s, 4s; }
-@keyframes fall { to { top: 105vh; } }
+@keyframes fall { to { translate: 0 calc(105vh + 40px); } }
 @keyframes flutter { 0%, 100% { transform: translateX(0) rotate(0deg); } 50% { transform: translateX(40px) rotate(160deg); } }
 
 /* ---------- Content ---------- */

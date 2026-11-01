@@ -174,7 +174,7 @@
   function heroPushBack() {
     var hero = document.querySelector(".hero");
     if (!hero) return;
-    gsap.fromTo(hero, { "--out": 0 }, { "--out": 1, ease: "none",
+    gsap.fromTo(hero.querySelector(":scope > .wrap"), { "--out": 0 }, { "--out": 1, ease: "none",
       scrollTrigger: { trigger: hero, start: "top top", end: "bottom top", scrub: true } });
   }
 
@@ -201,10 +201,16 @@
     secs.forEach(function (sec, i) {
       var next = secs[i + 1];
       if (!next) return;
+      var dim = document.createElement("i");
+      dim.className = "stack-dim";
+      dim.setAttribute("aria-hidden", "true");
+      sec.appendChild(dim);
       // tall sections pin once their bottom is on screen, so nothing is hidden under the next card
-      gsap.fromTo(sec, { "--stack": 0 }, { "--stack": 1, ease: "none", scrollTrigger: {
+      gsap.timeline({ scrollTrigger: {
         trigger: sec, start: function () { return sec.offsetHeight > innerHeight ? "bottom bottom" : "top top"; },
-        endTrigger: next, end: "top top", pin: true, pinSpacing: false, scrub: true, invalidateOnRefresh: true } });
+        endTrigger: next, end: "top top", pin: true, pinSpacing: false, anticipatePin: 1, scrub: true, invalidateOnRefresh: true } })
+        .fromTo(sec, { scale: 1 }, { scale: 0.93, transformOrigin: "50% 100%", ease: "none" }, 0)
+        .fromTo(dim, { opacity: 0 }, { opacity: 0.45, ease: "none" }, 0);
     });
   }
 
@@ -226,9 +232,9 @@
   function heroFlyThrough() {
     var hero = document.querySelector(".hero");
     if (!hero) return;
-    gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "+=110%", pin: true, scrub: 0.6 } })
-      .fromTo(hero, { "--zoom": 0 }, { "--zoom": 1, ease: "power2.in", duration: 1 }, 0)
-      .fromTo(hero, { "--fade": 0 }, { "--fade": 1, ease: "power1.in", duration: 0.75 }, 0.25);
+    gsap.timeline({ scrollTrigger: { trigger: hero, start: "top top", end: "+=110%", pin: true, anticipatePin: 1, scrub: 0.6 } })
+      .fromTo(hero.querySelector(".names"), { "--zoom": 0 }, { "--zoom": 1, ease: "power2.in", duration: 1 }, 0)
+      .fromTo(hero.querySelector(":scope > .wrap"), { "--fade": 0 }, { "--fade": 1, ease: "power1.in", duration: 0.75 }, 0.25);
   }
 
   function galleryHall() {
@@ -241,7 +247,7 @@
     function dist() { return gal.scrollWidth - innerWidth; }
     var hall = gsap.to(gal, { x: function () { return -dist(); }, ease: "none",
       scrollTrigger: { trigger: sec, start: "top top", end: function () { return "+=" + dist(); },
-        pin: true, scrub: 0.5, invalidateOnRefresh: true } });
+        pin: true, anticipatePin: 1, scrub: 0.5, invalidateOnRefresh: true } });
     figs.forEach(function (f) {
       ScrollTrigger.create({ trigger: f, containerAnimation: hall, start: "left right", end: "right left",
         onUpdate: function (s) { f.style.setProperty("--hs", (0.8 + 0.26 * Math.sin(s.progress * Math.PI)).toFixed(3)); } });
@@ -289,34 +295,39 @@
   function inkTitles() {
     root.classList.add("fx-ink");
     gsap.utils.toArray(".content .sec:not(.hero) .title").forEach(function (t) {
-      gsap.fromTo(t, { "--ink": 0 }, { "--ink": 1, ease: "none",
+      gsap.fromTo(t, { "--inked": 0 }, { "--inked": 1, ease: "none",
         scrollTrigger: { trigger: t, start: "top 90%", end: "top 50%", scrub: 0.5 } });
     });
     var names = document.querySelector(".hero .names");
-    if (names) gsap.fromTo(names, { "--ink": 0 }, { "--ink": 1, duration: 2.4, ease: "power2.inOut", delay: 0.3 });
+    if (names) gsap.fromTo(names, { "--inked": 0 }, { "--inked": 1, duration: 2.4, ease: "power2.inOut", delay: 0.3 });
   }
 
   function wind() {
     root.classList.add("fx-wind");
-    gsap.set(body, { "--wind": 0 });
+    var leaves = gsap.utils.toArray(".gallery figure, .sprig, .branch, .leaves");
+    var gust = { v: 0 };
+    function blow() {
+      var v = gust.v.toFixed(3);
+      leaves.forEach(function (el) { el.style.setProperty("--wind", v); });
+    }
     ScrollTrigger.create({ start: 0, end: "max", onUpdate: function (self) {
-      gsap.to(body, { "--wind": clamp(self.getVelocity() / 1800), duration: 0.4, ease: "power2.out", overwrite: "auto",
-        onComplete: function () { gsap.to(body, { "--wind": 0, duration: 1.8, ease: "elastic.out(1, 0.3)" }); } });
+      gsap.to(gust, { v: clamp(self.getVelocity() / 1800), duration: 0.4, ease: "power2.out", overwrite: true, onUpdate: blow,
+        onComplete: function () { gsap.to(gust, { v: 0, duration: 1.8, ease: "elastic.out(1, 0.3)", onUpdate: blow }); } });
     } });
   }
 
   /* ================= Amalfi: playful, jelly and lemons ================= */
   function jelly() {
     root.classList.add("fx-jelly");
-    gsap.set(track, { "--jelly": 0 });
+    var pages = track.querySelectorAll(".panel-in > .wrap");
     var last = track.scrollLeft, lastT = performance.now();
     track.addEventListener("scroll", function () {
       var now = performance.now();
       var v = (track.scrollLeft - last) / Math.max(8, now - lastT);
       last = track.scrollLeft;
       lastT = now;
-      gsap.to(track, { "--jelly": clamp(v / 4), duration: 0.25, overwrite: "auto",
-        onComplete: function () { gsap.to(track, { "--jelly": 0, duration: 1.2, ease: "elastic.out(1, 0.3)" }); } });
+      gsap.to(pages, { "--jelly": clamp(v / 4), duration: 0.25, overwrite: "auto",
+        onComplete: function () { gsap.to(pages, { "--jelly": 0, duration: 1.2, ease: "elastic.out(1, 0.3)" }); } });
     }, { passive: true });
   }
 
@@ -399,9 +410,9 @@
     var hero = document.querySelector(".hero");
     if (!hero) return;
     root.classList.add("tilt");
-    gsap.set(hero, { "--tx": 0, "--ty": 0 });
+    var layers = hero.querySelectorAll(":scope > .wrap, .panel-in > .wrap, .sparks, .branch, .frame-corners, .hero-lemons");
     function move(x, y) {
-      gsap.to(hero, { "--tx": x, "--ty": y, duration: 0.9, ease: "power3.out", overwrite: "auto" });
+      gsap.to(layers, { "--tx": x, "--ty": y, duration: 0.9, ease: "power3.out", overwrite: "auto" });
     }
     if (finePointer) {
       window.addEventListener("pointermove", function (e) {

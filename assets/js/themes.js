@@ -6,6 +6,7 @@
      .intro.keep      intro stays on screen (pointer-events off) as a frame
      [data-split]     text is split into <span style="--i"> per character
      [data-scroll]    gets --p = 0..1 as it travels through the viewport
+                      (data-scroll=".sel" sets it on those descendants instead)
      .track           horizontal album: dots, arrows, wheel + keys, .active panel
      .spotlight       follows the pointer via --mx / --my
    Events for motion.js: "invite:open" on document, "invite:page" on each newly active .panel.
@@ -89,14 +90,18 @@
 
   /* ---------- Scroll progress (--p) ---------- */
   var progressEls = Array.prototype.slice.call(document.querySelectorAll("[data-scroll]"));
+  var progressTargets = progressEls.map(function (el) {
+    var sel = el.getAttribute("data-scroll");
+    return sel ? Array.prototype.slice.call(el.querySelectorAll(sel)) : [el];
+  });
   var ticking = false;
   function updateProgress() {
     ticking = false;
     var vh = window.innerHeight;
-    progressEls.forEach(function (el) {
+    progressEls.forEach(function (el, i) {
       var r = el.getBoundingClientRect();
-      var p = (vh - r.top) / (vh + r.height);
-      el.style.setProperty("--p", Math.min(1, Math.max(0, p)).toFixed(4));
+      var p = Math.min(1, Math.max(0, (vh - r.top) / (vh + r.height))).toFixed(4);
+      progressTargets[i].forEach(function (t) { t.style.setProperty("--p", p); });
     });
   }
   if (progressEls.length) {

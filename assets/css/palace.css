@@ -135,7 +135,7 @@ body {
   transform: skewX(-18deg); pointer-events: none;
   animation: beam 9s ease-in-out 2s infinite;
 }
-@keyframes beam { 0%, 55% { left: -40%; opacity: 0; } 62% { opacity: 1; } 100% { left: 130%; opacity: 0; } }
+@keyframes beam { 0%, 55% { translate: 0 0; opacity: 0; } 62% { opacity: 1; } 100% { translate: 567% 0; opacity: 0; } }
 
 .arch {
   width: min(300px, 70vw); aspect-ratio: 3 / 4; margin: 0 auto 34px;
