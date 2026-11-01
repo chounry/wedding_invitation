@@ -284,10 +284,10 @@ html.scrolly { scroll-behavior: auto; }
   -webkit-mask-image: linear-gradient(100deg, #000 calc(var(--inked) * 140% - 40%), transparent calc(var(--inked) * 140% - 10%));
   mask-image: linear-gradient(100deg, #000 calc(var(--inked) * 140% - 40%), transparent calc(var(--inked) * 140% - 10%));
 }
-.fx-wind .gallery figure { rotate: calc(var(--wind, 0) * var(--sway, 1) * 4deg); }
+.fx-wind .gallery figure { rotate: calc(var(--wind, 0) * var(--sway, 1) * 4deg); will-change: transform; }
 .fx-wind .gallery figure:nth-child(even) { --sway: -1; }
 .fx-wind :is(.sprig, .branch) { rotate: calc(var(--wind, 0) * 7deg); }
-.fx-wind .leaves { translate: calc(var(--wind, 0) * -70px) 0; }
+.fx-leaves .leaves i:nth-child(n) { top: 0; left: 0; animation: none; will-change: transform; }
 
 /* amalfi: pages wobble with the swipe, lemons pop when tapped */
 .fx-jelly .panel-in > .wrap {

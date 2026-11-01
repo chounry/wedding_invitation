@@ -302,18 +302,91 @@
     if (names) gsap.fromTo(names, { "--inked": 0 }, { "--inked": 1, duration: 2.4, ease: "power2.inOut", delay: 0.3 });
   }
 
+  var gust = { v: 0 };
+
   function wind() {
     root.classList.add("fx-wind");
-    var leaves = gsap.utils.toArray(".gallery figure, .sprig, .branch, .leaves");
-    var gust = { v: 0 };
-    function blow() {
-      var v = gust.v.toFixed(3);
-      leaves.forEach(function (el) { el.style.setProperty("--wind", v); });
-    }
+    var swayers = gsap.utils.toArray(".gallery figure, .sprig, .branch");
+    var target = 0, speed = 0, shown = 0;
     ScrollTrigger.create({ start: 0, end: "max", onUpdate: function (self) {
-      gsap.to(gust, { v: clamp(self.getVelocity() / 1800), duration: 0.4, ease: "power2.out", overwrite: true, onUpdate: blow,
-        onComplete: function () { gsap.to(gust, { v: 0, duration: 1.8, ease: "elastic.out(1, 0.3)", onUpdate: blow }); } });
+      target = clamp(self.getVelocity() / 2200);
     } });
+    // a soft spring instead of a tween per scroll event: touch scrolling reports jumpy
+    // velocities, and chasing each one made the photos jerk
+    gsap.ticker.add(function (time, ms) {
+      var dt = Math.min(0.05, ms / 1000);
+      target *= Math.exp(-dt * 5);
+      speed += ((target - gust.v) * 40 - speed * 5) * dt;
+      gust.v += speed * dt;
+      if (Math.abs(gust.v - shown) < 0.003) return;
+      shown = gust.v;
+      var v = shown.toFixed(3);
+      swayers.forEach(function (el) { el.style.setProperty("--wind", v); });
+    });
+  }
+
+  function fallingLeaves() {
+    var box = document.querySelector(".leaves");
+    if (!box) return;
+    root.classList.add("fx-leaves");
+    var els = gsap.utils.toArray(box.children);
+    var extra = innerWidth < 600 ? 5 : 11;
+    for (var c = 0; c < extra; c++) {
+      var copy = els[c % els.length].cloneNode();
+      box.appendChild(copy);
+      els.push(copy);
+    }
+    var w = innerWidth, h = innerHeight;
+    window.addEventListener("resize", function () { w = innerWidth; h = innerHeight; });
+    var leaves = els.map(function (el, i) {
+      return { el: el, x: Math.random() * w, y: Math.random() * h, vx: 0, vy: 0,
+        rot: Math.random() * 360, spin: (Math.random() - 0.5) * 90, phase: Math.random() * 6.3,
+        fall: 34 + Math.random() * 30, size: 0.8 + Math.random() * 0.6, i: i };
+    });
+
+    var px = -999, py = -999, pvx = 0, pvy = 0, lastMove = 0;
+    function point(x, y, kick) {
+      var now = performance.now(), gap = Math.max(16, now - lastMove);
+      if (now - lastMove < 120) { pvx = (x - px) / gap * 1000; pvy = (y - py) / gap * 1000; }
+      else { pvx = pvy = 0; }
+      px = x; py = y; lastMove = now;
+      if (kick) push(260, 420, 0.25);
+    }
+    function push(radius, power, carry) {
+      leaves.forEach(function (l) {
+        var dx = l.x - px, dy = l.y - py, d = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (d > radius) return;
+        var f = (1 - d / radius) * power;
+        l.vx += dx / d * f + pvx * carry * (1 - d / radius);
+        l.vy += dy / d * f * 0.7 + pvy * carry * (1 - d / radius);
+        l.spin += (Math.random() - 0.5) * f * 2;
+      });
+    }
+    window.addEventListener("pointermove", function (e) { if (e.pointerType === "mouse") point(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener("pointerdown", function (e) { point(e.clientX, e.clientY, true); }, { passive: true });
+    window.addEventListener("touchmove", function (e) { var t = e.touches[0]; point(t.clientX, t.clientY); }, { passive: true });
+
+    gsap.ticker.add(function (time, ms) {
+      var dt = Math.min(0.05, ms / 1000);
+      var near = performance.now() - lastMove < 100;
+      if (near) push(140, 900 * dt, 3 * dt);
+      var drag = Math.exp(-dt * 1.6);
+      leaves.forEach(function (l) {
+        l.phase += dt * (2 + l.i % 3);
+        l.vx = l.vx * drag + gust.v * -260 * dt;
+        l.vy = l.vy * drag + (l.fall - l.vy) * (1 - drag);
+        l.spin *= Math.exp(-dt * 0.8);
+        l.x += (l.vx + Math.sin(l.phase) * 28) * dt;
+        l.y += l.vy * dt;
+        l.rot += (l.spin + Math.cos(l.phase) * 60) * dt;
+        if (l.y > h + 30) { l.y = -30; l.x = Math.random() * w; l.vx = l.vy = 0; }
+        else if (l.y < -60) l.y = h + 20;
+        if (l.x < -30) l.x += w + 60;
+        else if (l.x > w + 30) l.x -= w + 60;
+        l.el.style.transform = "translate3d(" + l.x.toFixed(1) + "px," + l.y.toFixed(1) + "px,0) rotate(" + l.rot.toFixed(1) +
+          "deg) scale(" + l.size.toFixed(2) + "," + (l.size * Math.cos(l.phase * 1.3)).toFixed(2) + ")";
+      });
+    });
   }
 
   /* ================= Amalfi: playful, jelly and lemons ================= */
@@ -349,7 +422,7 @@
     palace: { shape: "spark", open: "fountain", finale: "rain", hero: heroFlyThrough, scenes: [timelineSpark, galleryHall] },
     velvet: { shape: "petal", open: "rain", finale: "rain", finaleOpts: { count: innerWidth < 600 ? 110 : 200 },
       hero: heroPushBack, scenes: [actStamps, timelineSpark, stageFlats], countdown: marquee },
-    olive: { shape: "leaf", open: "fountain", finale: "rain", hero: heroPushBack, scenes: [inkTitles, wind] },
+    olive: { shape: "leaf", open: "fountain", finale: "rain", hero: heroPushBack, scenes: [inkTitles, wind, fallingLeaves] },
     amalfi: { shape: "dot", open: "fountain", finale: "cannons", finaleOpts: { colors: ["--lemon", "#ffffff", "--lemon", "--leaf"] },
       album: [jelly, lemons] }
   };
